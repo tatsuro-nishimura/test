@@ -19,14 +19,19 @@ class pi:
         return(self.a * self.b / self.s)
 
 
-# set parameters
-a = 1.0
-b = np.sqrt(2)/2
-s = 0.25
-t = 1.0
-# set allowable error
-epsilon = 10**(-5)
+def main():
+    # set parameters
+    a = 1.0
+    b = np.sqrt(2)/2
+    s = 0.25
+    t = 1.0
+    # set allowable error
+    epsilon = 10**(-5)
 
-# calculate pi
-pi_value = pi(a, b, s, t).calculate_pi(epsilon)
-print(format(pi_value, '.20g'))
+    # calculate pi
+    pi_value = pi(a, b, s, t).calculate_pi(epsilon)
+    print(format(pi_value, '.20g'))
+
+
+if __name__ == '__main__':
+    main()
