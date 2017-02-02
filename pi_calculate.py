@@ -1,4 +1,4 @@
-import numpy as np
+import decimal
 
 # make pi class
 class pi:
@@ -12,7 +12,7 @@ class pi:
         while (self.a - self.b) > epsilon:
             y = (self.a + self.b)/2
             c = self.a - y
-            self.b = np.sqrt(self.a * self.b)
+            self.b = (self.a * self.b).sqrt()
             self.a = y
             self.s = self.s - self.t * c**2
             self.t = 2 * self.t
@@ -20,17 +20,20 @@ class pi:
 
 
 def main():
+    D = decimal.Decimal
+    # set decimal precision
+    decimal.getcontext().prec = 1000
     # set parameters
-    a = 1.0
-    b = np.sqrt(2)/2
-    s = 0.25
-    t = 1.0
+    a = 1
+    b = 1/D(2).sqrt()
+    s = 1/D(4)
+    t = 1
     # set allowable error
-    epsilon = 10**(-5)
+    epsilon = D(10)**(-300)
 
     # calculate pi
     pi_value = pi(a, b, s, t).calculate_pi(epsilon)
-    print(format(pi_value, '.20g'))
+    print(pi_value)
 
 
 if __name__ == '__main__':
