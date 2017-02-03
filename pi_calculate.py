@@ -34,8 +34,8 @@ def main():
     t = 1
     # calculate pi
     pi_calc = pi(a, b, s, t).calculate_pi(epsilon)
-    print("Approximate value of Pi: " + str(pi_calc[0]))
-    print("Number of iterations: " + str(pi_calc[1]))
+    print("Approximate value of Pi: {pi_calc[0]}".format(**locals()))
+    print("Number of iterations: {pi_calc[1]}".format(**locals()))
 
 
 if __name__ == '__main__':
