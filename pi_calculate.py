@@ -23,14 +23,13 @@ def main():
     D = decimal.Decimal
     # set decimal precision
     decimal.getcontext().prec = 1000
+    # set allowable error
+    epsilon = D(10)**(-300)
     # set parameters
     a = 1
     b = 1/D(2).sqrt()
     s = 1/D(4)
     t = 1
-    # set allowable error
-    epsilon = D(10)**(-300)
-
     # calculate pi
     pi_value = pi(a, b, s, t).calculate_pi(epsilon)
     print(pi_value)
