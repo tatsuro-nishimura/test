@@ -1,5 +1,5 @@
 # make tropical class
-class tropical:
+class Tropical:
     def __init__(self, maxmin = 'max'):
         self.maxmin = maxmin
     def sum(self, a, b):
@@ -14,9 +14,9 @@ class tropical:
 
 
 def main():
-    print(tropical().sum(3, 41))
-    print(tropical('min').sum(3, 41))
-    print(tropical().prod(3, 41))
+    print(Tropical().sum(3, 41))
+    print(Tropical('min').sum(3, 41))
+    print(Tropical().prod(3, 41))
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 import decimal
 
 # make pi class
-class pi:
+class Pi:
     def __init__(self, a, b, s, t):
         self.a = a
         self.b = b
@@ -33,7 +33,7 @@ def main():
     s = 1/D(4)
     t = 1
     # calculate pi
-    pi_calc = pi(a, b, s, t).calculate_pi(epsilon)
+    pi_calc = Pi(a, b, s, t).calculate_pi(epsilon)
     print("Approximate value of Pi: {pi_calc[0]}".format(**locals()))
     print("Number of iterations: {pi_calc[1]}".format(**locals()))
 
