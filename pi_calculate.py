@@ -9,14 +9,16 @@ class pi:
         self.t = t
     # define calculation of pi by Gauss-Legendre algorithm
     def calculate_pi(self, epsilon):
+        counter = 0
         while (self.a - self.b) > epsilon:
+            counter += 1
             y = (self.a + self.b)/2
             c = self.a - y
             self.b = (self.a * self.b).sqrt()
             self.a = y
             self.s = self.s - self.t * c**2
             self.t = 2 * self.t
-        return(self.a * self.b / self.s)
+        return(self.a * self.b / self.s, counter)
 
 
 def main():
@@ -31,8 +33,9 @@ def main():
     s = 1/D(4)
     t = 1
     # calculate pi
-    pi_value = pi(a, b, s, t).calculate_pi(epsilon)
-    print(pi_value)
+    pi_calc = pi(a, b, s, t).calculate_pi(epsilon)
+    print("Approximate value of Pi: " + str(pi_calc[0]))
+    print("Number of iterations: " + str(pi_calc[1]))
 
 
 if __name__ == '__main__':
