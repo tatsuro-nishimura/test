@@ -31,6 +31,12 @@ class Pi:
         pi_monte = counter/(number_monte*250)
         return(pi_monte)
 
+    # define calculation of pi by zeta(2)
+    def calculate_pi_zeta(self, number_zeta):
+        seq = np.cumsum(np.ones(number_zeta))
+        pi_zeta = np.sqrt(6*sum(seq**(-2)))
+        return(pi_zeta)
+
 
 def main():
     D = decimal.Decimal
@@ -44,6 +50,7 @@ def main():
     s = 1/D(4)
     t = 1
     number_monte = 1000
+    number_zeta = 1000000
     # calculate pi by Gauss-Legendre method
     pi_calc = Pi(a, b, s, t).calculate_pi_GL(epsilon)
     print("Approximate value of Pi(Gauss-Legendre): {pi_calc[0]}".format(**locals()))
@@ -51,6 +58,9 @@ def main():
     # calculate pi by montecarlo
     pi_calc = Pi(a, b, s, t).calculate_pi_monte(number_monte)
     print("Approximate value of Pi(montecarlo): {pi_calc}".format(**locals()))
+    # calculate pi by zeta
+    pi_calc = Pi(a, b, s, t).calculate_pi_zeta(number_monte)
+    print("Approximate value of Pi(zeta(2)): {pi_calc}".format(**locals()))
 
 
 if __name__ == '__main__':
