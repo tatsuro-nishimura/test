@@ -1,4 +1,5 @@
 import decimal
+import numpy as np
 
 # make pi class
 class Pi:
@@ -8,7 +9,7 @@ class Pi:
         self.s = s
         self.t = t
     # define calculation of pi by Gauss-Legendre algorithm
-    def calculate_pi(self, epsilon):
+    def calculate_pi_GL(self, epsilon):
         counter = 0
         while (self.a - self.b) > epsilon:
             counter += 1
@@ -19,6 +20,16 @@ class Pi:
             self.s = self.s - self.t * c**2
             self.t = 2 * self.t
         return(self.a * self.b / self.s, counter)
+
+    # define calculation of pi by montecarlo
+    def calculate_pi_monte(self, number_monte):
+        counter = 0
+        for i in range(0, number_monte):
+            x = np.random.rand(1000)
+            y = np.random.rand(1000)
+            counter += sum(x**2 + y**2 < 1)
+        pi_monte = counter/(number_monte*250)
+        return(pi_monte)
 
 
 def main():
@@ -32,10 +43,14 @@ def main():
     b = 1/D(2).sqrt()
     s = 1/D(4)
     t = 1
-    # calculate pi
-    pi_calc = Pi(a, b, s, t).calculate_pi(epsilon)
-    print("Approximate value of Pi: {pi_calc[0]}".format(**locals()))
-    print("Number of iterations: {pi_calc[1]}".format(**locals()))
+    number_monte = 1000
+    # calculate pi by Gauss-Legendre method
+    pi_calc = Pi(a, b, s, t).calculate_pi_GL(epsilon)
+    print("Approximate value of Pi(Gauss-Legendre): {pi_calc[0]}".format(**locals()))
+    print("Number of iterations(Gauss-Legendre): {pi_calc[1]}".format(**locals()))
+    # calculate pi by montecarlo
+    pi_calc = Pi(a, b, s, t).calculate_pi_monte(number_monte)
+    print("Approximate value of Pi(montecarlo): {pi_calc}".format(**locals()))
 
 
 if __name__ == '__main__':
