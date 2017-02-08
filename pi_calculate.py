@@ -51,15 +51,16 @@ def main():
     t = 1
     number_monte = 1000
     number_zeta = 1000000
+    Pi_c = Pi(a, b, s, t)
     # calculate pi by Gauss-Legendre method
-    pi_calc = Pi(a, b, s, t).calculate_pi_GL(epsilon)
+    pi_calc = Pi_c.calculate_pi_GL(epsilon)
     print("Approximate value of Pi(Gauss-Legendre): {pi_calc[0]}".format(**locals()))
     print("Number of iterations(Gauss-Legendre): {pi_calc[1]}".format(**locals()))
     # calculate pi by montecarlo
-    pi_calc = Pi(a, b, s, t).calculate_pi_monte(number_monte)
+    pi_calc = Pi_c.calculate_pi_monte(number_monte)
     print("Approximate value of Pi(montecarlo): {pi_calc}".format(**locals()))
     # calculate pi by zeta
-    pi_calc = Pi(a, b, s, t).calculate_pi_zeta(number_monte)
+    pi_calc = Pi_c.calculate_pi_zeta(number_monte)
     print("Approximate value of Pi(zeta(2)): {pi_calc}".format(**locals()))
 
 
