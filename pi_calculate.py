@@ -31,7 +31,7 @@ class Pi:
         pi_monte = counter/(number_monte*250)
         return(pi_monte)
 
-    # define calculation of pi by zeta(2)
+    # define calculation of pi by zeta(2) (or Basel problem)
     def calculate_pi_zeta(self, number_zeta):
         seq = np.cumsum(np.ones(number_zeta))
         pi_zeta = np.sqrt(6*sum(seq**(-2)))
