@@ -54,14 +54,14 @@ def main():
     Pi_c = Pi(a, b, s, t)
     # calculate pi by Gauss-Legendre method
     pi_calc = Pi_c.calculate_pi_GL(epsilon)
-    print("Approximate value of Pi(Gauss-Legendre): {pi_calc[0]}".format(**locals()))
-    print("Number of iterations(Gauss-Legendre): {pi_calc[1]}".format(**locals()))
+    print('Approximate value of Pi(Gauss-Legendre): {pi_calc[0]}'.format(**locals()))
+    print('Number of iterations(Gauss-Legendre): {pi_calc[1]}'.format(**locals()))
     # calculate pi by montecarlo
     pi_calc = Pi_c.calculate_pi_monte(number_monte)
-    print("Approximate value of Pi(montecarlo): {pi_calc}".format(**locals()))
+    print('Approximate value of Pi(montecarlo): {pi_calc}'.format(**locals()))
     # calculate pi by zeta
-    pi_calc = Pi_c.calculate_pi_zeta(number_monte)
-    print("Approximate value of Pi(zeta(2)): {pi_calc}".format(**locals()))
+    pi_calc = Pi_c.calculate_pi_zeta(number_zeta)
+    print('Approximate value of Pi(zeta(2)): {pi_calc}'.format(**locals()))
 
 
 if __name__ == '__main__':
