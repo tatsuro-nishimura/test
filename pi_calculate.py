@@ -39,8 +39,9 @@ class Pi:
 
     # define calculation of pi by perimeter of regular polygon
     def calculate_pi_poly(self, number_poly):
-        inner_perimeter = number_poly*np.sin(np.pi/number_poly)
-        outer_perimeter = number_poly*np.tan(np.pi/number_poly)
+        theta = np.pi/number_poly
+        inner_perimeter = number_poly*np.sin(theta)
+        outer_perimeter = number_poly*np.tan(theta)
         return((inner_perimeter + outer_perimeter) / 2)
 
 
