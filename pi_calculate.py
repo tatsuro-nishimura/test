@@ -37,6 +37,12 @@ class Pi:
         pi_zeta = np.sqrt(6*sum(seq**(-2)))
         return(pi_zeta)
 
+    # define calculation of pi by perimeter of regular polygon
+    def calculate_pi_poly(self, number_poly):
+        inner_perimeter = number_poly*np.sin(np.pi/number_poly)
+        outer_perimeter = number_poly*np.tan(np.pi/number_poly)
+        return((inner_perimeter + outer_perimeter) / 2)
+
 
 def main():
     D = decimal.Decimal
@@ -51,6 +57,7 @@ def main():
     t = 1
     number_monte = 1000
     number_zeta = 1000000
+    number_poly = 1000000
     Pi_c = Pi(a, b, s, t)
     # calculate pi by Gauss-Legendre method
     pi_calc = Pi_c.calculate_pi_GL(epsilon)
@@ -62,6 +69,9 @@ def main():
     # calculate pi by zeta
     pi_calc = Pi_c.calculate_pi_zeta(number_zeta)
     print('Approximate value of Pi(zeta(2)): {pi_calc}'.format(**locals()))
+    # calculate pi by perimeter of regular polygon
+    pi_calc = Pi_c.calculate_pi_poly(number_poly)
+    print('Approximate value of Pi(polygon): {pi_calc}'.format(**locals()))
 
 
 if __name__ == '__main__':
