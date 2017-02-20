@@ -28,7 +28,7 @@ class Pi:
             x = np.random.rand(1000)
             y = np.random.rand(1000)
             counter += sum(x**2 + y**2 < 1)
-        pi_monte = counter/(number_monte*250)
+        pi_monte = counter / (number_monte*250)
         return(pi_monte)
 
     # define calculation of pi by zeta(2) (or Basel problem)
