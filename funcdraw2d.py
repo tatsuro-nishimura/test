@@ -12,17 +12,17 @@ class FuncDraw2d:
         self.xspeed = xspeed
 
     def dynamic_plot(self):
-        fig, ax = plt.subplots(1, 1)
+        axis = plt.subplots(1, 1)[1]
         x = self.x
         y = self.func(x)
-        curve = ax.plot(x, y)[0]
+        curve = axis.plot(x, y)[0]
         while True:
             x += self.xspeed
             y = self.func(x)
             curve.set_data(x, y)
-            ax.set_xlim((x.min(), x.max()))
-            ax.set_ylim((1.1 * y.min() - 0.1 * y.max(),
-                         1.1 * y.max() - 0.1 * y.min()))
+            axis.set_xlim((x.min(), x.max()))
+            axis.set_ylim((1.1 * y.min() - 0.1 * y.max(),
+                           1.1 * y.max() - 0.1 * y.min()))
             plt.pause(.01)
 
 
