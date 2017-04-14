@@ -15,11 +15,11 @@ class FuncDraw2d:
         fig, ax = plt.subplots(1, 1)
         x = self.x
         y = self.func(x)
-        lines = ax.plot(x, y)[0]
+        curve = ax.plot(x, y)[0]
         while True:
             x += self.xspeed
             y = self.func(x)
-            lines.set_data(x, y)
+            curve.set_data(x, y)
             ax.set_xlim((x.min(), x.max()))
             ax.set_ylim((1.1 * y.min() - 0.1 * y.max(),
                          1.1 * y.max() - 0.1 * y.min()))
