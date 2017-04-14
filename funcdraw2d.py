@@ -9,20 +9,19 @@ class DrawExplicitFunc2d:
                  xspeed=0.1):
         self.func = func
         self.x = xinterval_first
+        self.y = self.func(self.x)
         self.xspeed = xspeed
 
     def dynamic_plot(self):
         axis = plt.subplots(1, 1)[1]
-        x = self.x
-        y = self.func(x)
-        curve = axis.plot(x, y)[0]
+        curve = axis.plot(self.x, self.y)[0]
         while True:
-            x += self.xspeed
-            y = self.func(x)
-            curve.set_data(x, y)
-            axis.set_xlim((x.min(), x.max()))
-            axis.set_ylim((1.1 * y.min() - 0.1 * y.max(),
-                           1.1 * y.max() - 0.1 * y.min()))
+            self.x += self.xspeed
+            self.y = self.func(self.x)
+            curve.set_data(self.x, self.y)
+            axis.set_xlim((self.x.min(), self.x.max()))
+            axis.set_ylim((1.1 * self.y.min() - 0.1 * self.y.max(),
+                           1.1 * self.y.max() - 0.1 * self.y.min()))
             plt.pause(.01)
 
 
