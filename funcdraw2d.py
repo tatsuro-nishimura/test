@@ -5,18 +5,18 @@ import matplotlib.pyplot as plt
 class DrawExplicitFunc2d:
     def __init__(self,
                  func=(lambda x: 0.1 * x + np.sin(x)),
-                 xinterval_first=np.arange(-np.pi, np.pi, 0.1),
-                 xspeed=0.1):
+                 x_first=np.arange(-np.pi, np.pi, 0.1),
+                 x_speed=0.1):
         self.func = func
-        self.x = xinterval_first
+        self.x = x_first
         self.y = self.func(self.x)
-        self.xspeed = xspeed
+        self.xspeed = x_speed
 
     def dynamic_plot(self):
         axis = plt.subplots(1, 1)[1]
         curve = axis.plot(self.x, self.y)[0]
         while True:
-            self.x += self.xspeed
+            self.x += self.x_speed
             self.y = self.func(self.x)
             curve.set_data(self.x, self.y)
             axis.set_xlim((self.x.min(), self.x.max()))
