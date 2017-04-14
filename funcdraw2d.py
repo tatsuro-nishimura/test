@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class FuncDraw2d:
+class DrawExplicitFunc2d:
     def __init__(self,
                  func=(lambda x: 0.1 * x + np.sin(x)),
                  xinterval_first=np.arange(-np.pi, np.pi, 0.1),
@@ -27,7 +27,7 @@ class FuncDraw2d:
 
 
 def main():
-    FuncDraw2d().dynamic_plot()
+    DrawExplicitFunc2d().dynamic_plot()
 
 
 if __name__ == "__main__":
