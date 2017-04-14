@@ -10,7 +10,7 @@ class DrawExplicitFunc2d:
         self.func = func
         self.x = x_first
         self.y = self.func(self.x)
-        self.xspeed = x_speed
+        self.x_speed = x_speed
 
     def dynamic_plot(self):
         axis = plt.subplots(1, 1)[1]
