@@ -11,7 +11,7 @@ class FuncDraw2d:
         self.x = xinterval_first
         self.xspeed = xspeed
 
-    def dinamic_plot(self):
+    def dynamic_plot(self):
         fig, ax = plt.subplots(1, 1)
         x = self.x
         y = self.func(x)
@@ -27,7 +27,7 @@ class FuncDraw2d:
 
 
 def main():
-    FuncDraw2d().dinamic_plot()
+    FuncDraw2d().dynamic_plot()
 
 
 if __name__ == "__main__":
