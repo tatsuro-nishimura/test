@@ -39,7 +39,7 @@ def str_shuffle(str):
     return ''.join(random.sample(str,len(str)))
 
 def a09(sentence):
-    return ' '.join([word[0]+str_shuffle(word[1:len(word)-1])+word[len(word)-1] if len(word)>4 else word for word in sentence.split()])
+    return ' '.join([word[0]+str_shuffle(word[1:-1])+word[-1] if len(word)>4 else word for word in sentence.split()])
 
 def main():
     print(a00('stressed'))
