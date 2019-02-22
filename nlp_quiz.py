@@ -2,7 +2,6 @@
 # sorry, not completed
 import re
 import random
-import numpy as np
 import pandas as pd
 
 
@@ -51,8 +50,8 @@ def a10_13(input):
     df = pd.DataFrame([x.split(' ') for x in doc.replace('\t', ' ').split('\n') if len(x)>0])
     cols = [col1, col2] = [df.iloc[:,0], df.iloc[:,1]]
     for i in range(1, 3):
-        with open('./col'+str(i)+'.txt', mode='w') as f:
-            f.write('\n'.join([x for x in cols[i-1]]))
+        f = open('./col'+str(i)+'.txt', mode='w')
+        f.write('\n'.join([x for x in cols[i-1]]))
     f = open('./col1.txt'), open('./col2.txt')
     list = []
     for i in range(num_row):
