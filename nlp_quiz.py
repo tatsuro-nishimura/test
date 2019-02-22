@@ -4,25 +4,25 @@ import re
 import random
 
 
-def a00(str0):
-    return str0[::-1]
+def a00(str):
+    return str[::-1]
 
-def a01(str0):
-    return str0[::2]
+def a01(str):
+    return str[::2]
 
 def a02(str0, str1):
     return ''.join([x + y for (x, y) in zip(str0, str1)])
 
-def a03(str0):
-    return [len(x) for x in re.sub('[,.]', '', str0).split(' ')]
+def a03(str):
+    return [len(x) for x in re.sub('[,.]', '', str).split(' ')]
 
-def a04(str0):
-    list0 = str0.replace('.','').split()
+def a04(str):
+    list0 = str.replace('.','').split()
     list1 = [list0[i][0] if i in [0,4,5,6,7,8,14,15,18] else list0[i][0:2] for i in range(0,len(list0))]
     return dict([(list1[i],i+1) for i in range(0,len(list1))])
 
-def a05(seq0, n):
-    return [seq0[i:i+n] for i in range(0,len(seq0)-n+1)]
+def a05(seq, n):
+    return [seq[i:i+n] for i in range(0,len(seq)-n+1)]
 
 def a06(str0, str1):
     set0 = set(a05(str0, 2))
@@ -32,11 +32,14 @@ def a06(str0, str1):
 def a07(x, y, z):
     return str(x)+'時の'+str(y)+'は'+str(z)
 
-def cipher(str0):#this is for problem 08
-    return(''.join([chr(219 - ord(ch0)) if ch0.islower() else ch0 for ch0 in str0]))
+def cipher(str):
+    return(''.join([chr(219 - ord(ch)) if ch.islower() else ch for ch in str]))
 
-def a09(sentence0):
-    return ' '.join([word0[0]+''.join(random.sample(word0[1:len(word0)-1],len(word0)-2))+word0[len(word0)-1] if len(word0)>4 else word0 for word0 in sentence0.split()])
+def str_shuffle(str):
+    return ''.join(random.sample(str,len(str)))
+
+def a09(sentence):
+    return ' '.join([word[0]+str_shuffle(word[1:len(word)-1])+word[len(word)-1] if len(word)>4 else word for word in sentence.split()])
 
 def main():
     print(a00('stressed'))
@@ -48,7 +51,7 @@ def main():
     print(a05('I am an NLPer', 2))
     print(a06('paraparaparadise', 'paragraph'))
     print(a07(12, '気温', 22.4))
-    print(cipher('I am an NLPer'))
+    print(cipher('I am an NLPer'))#this is for problem 08
     print(cipher(cipher('I am an NLPer')))
     print(a09('Carl Friedrich Gauss was a German mathematician and physicist who made significant contributions to many fields in mathematics and sciences'))
 
