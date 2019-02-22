@@ -2,6 +2,8 @@
 # sorry, not completed
 import re
 import random
+import numpy as np
+import pandas as pd
 
 
 def a00(str):
@@ -25,8 +27,7 @@ def a05(seq, n):
     return [seq[i:i+n] for i in range(0,len(seq)-n+1)]
 
 def a06(str0, str1):
-    set0 = set(a05(str0, 2))
-    set1 = set(a05(str1, 2))
+    set0, set1 = set(a05(str0, 2)), set(a05(str1, 2))
     return set0|set1, set0&set1, set0-set1, set(['se'])<=set0, set(['se'])<=set1
 
 def a07(x, y, z):
@@ -35,11 +36,30 @@ def a07(x, y, z):
 def cipher(str):
     return(''.join([chr(219 - ord(ch)) if ch.islower() else ch for ch in str]))
 
-def str_shuffle(str):
+def shuffle_str(str):
     return ''.join(random.sample(str,len(str)))
 
 def a09(sentence):
-    return ' '.join([word[0]+str_shuffle(word[1:-1])+word[-1] if len(word)>4 else word for word in sentence.split()])
+    return ' '.join([word[0]+shuffle_str(word[1:-1])+word[-1] if len(word)>4 else word for word in sentence.split()])
+
+def a10_13(input):
+    f = open(input)
+    doc = f.read()
+    num_row = doc.count('\n')
+    print(num_row)
+    print(doc.replace('\t', ' '))
+    df = pd.DataFrame([x.split(' ') for x in doc.replace('\t', ' ').split('\n') if len(x)>0])
+    cols = [col1, col2] = [df.iloc[:,0], df.iloc[:,1]]
+    for i in range(1, 3):
+        with open('./col'+str(i)+'.txt', mode='w') as f:
+            f.write('\n'.join([x for x in cols[i-1]]))
+    f = open('./col1.txt'), open('./col2.txt')
+    list = []
+    for i in range(num_row):
+        list += f[0].readline().replace('\n', '') +'\t'+ f[1].readline()
+    f = open('./cols.txt', mode='w')
+    f.write(''.join(list))
+    f.close()
 
 def main():
     print(a00('stressed'))
@@ -54,6 +74,8 @@ def main():
     print(cipher('I am an NLPer'))#this is for problem 08
     print(cipher(cipher('I am an NLPer')))
     print(a09('Carl Friedrich Gauss was a German mathematician and physicist who made significant contributions to many fields in mathematics and sciences'))
+    print('---' + '\n' + 'complete chapter one!' + '\n' + '---')
+    a10_13('./hightemp.txt')
 
 if __name__ == '__main__':
     main()
