@@ -42,7 +42,7 @@ def shuffle_str(str):
 def a09(sentence):
     return ' '.join([word[0]+shuffle_str(word[1:-1])+word[-1] if len(word)>4 else word for word in sentence.split()])
 
-def a10_13(input, N):
+def a10_19(input, N):
     f = open(input)
     num_row = 0
     for i in f:
@@ -102,7 +102,7 @@ def main():
     print(cipher(cipher('I am an NLPer')))
     print(a09('Carl Friedrich Gauss was a German mathematician and physicist who made significant contributions to many fields in mathematics and sciences'))
     print('---' + '\n' + 'complete chapter one!' + '\n' + '---')
-    a10_13('./hightemp.txt', 5)
+    a10_19('./hightemp.txt', 5)
     print('---' + '\n' + 'complete chapter two!(except linux com)' + '\n' + '---')
 
 if __name__ == '__main__':
