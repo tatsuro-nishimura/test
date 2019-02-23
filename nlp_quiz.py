@@ -4,6 +4,8 @@ import re
 import random
 import pandas as pd
 import numpy as np
+import gzip
+import json
 
 
 def a00(str):
@@ -40,7 +42,8 @@ def shuffle_str(str):
     return ''.join(random.sample(str,len(str)))
 
 def a09(sentence):
-    return ' '.join([word[0]+shuffle_str(word[1:-1])+word[-1] if len(word)>4 else word for word in sentence.split()])
+    return ' '.join([word[0]+shuffle_str(word[1:-1])+word[-1] if len(
+        word)>4 else word for word in sentence.split()])
 
 def a10_19(input, N):
     f = open(input)
@@ -109,9 +112,29 @@ def solve_chapter_two():
     a10_19('./hightemp.txt', 5)
     print('---' + '\n' + 'complete chapter two!(except linux com)' + '\n' + '---')
 
+def solve_chapter_three():
+    f = gzip.open('./jawiki-country.json.gz', 'rt')
+    f1 = f.read()
+    d1 = {}
+    for l in f1.splitlines():
+        d0 = json.loads(l)
+        d1[d0['title']] = d0
+    doc = d1['イギリス']['text']
+    print(doc)
+    doc_cat = '\n'.join([x for x in doc.splitlines() if '[[Category:' in x])
+    print(doc_cat)
+    cats = doc_cat.replace('[', '').replace(
+        ']', '').replace('|*', '').replace('Category:', '')
+    print(cats)
+    list_sec = [x for x in doc.splitlines() if '==' in x]
+    list_sec2 = [(x.replace('=',''), int(x.count('=')/2 - 1)) for x in list_sec]
+    print(list_sec2)
+    print('---' + '\n' + 'complete Q20-23!' + '\n' + '---')
+
 def main():
     solve_chapter_one()
     solve_chapter_two()
+    solve_chapter_three()
 
 if __name__ == '__main__':
     main()
