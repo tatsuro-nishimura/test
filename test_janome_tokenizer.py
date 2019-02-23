@@ -1,13 +1,13 @@
 from janome.tokenizer import Tokenizer
 from collections import Counter
 
-def count_noun(sentence):
+def count_noun(doc):
     t = Tokenizer()
-    list_noun = [token.surface for token in t.tokenize(sentence) if token.part_of_speech.startswith('名詞')]
+    list_noun = [token.surface for token in t.tokenize(doc) if token.part_of_speech.startswith('名詞')]
     return Counter(list_noun).most_common()
 
 def main():
-    s0 = '''
+    d0 = '''
     プリンストンの人たちは、アインシュタインに関して多くの逸話を語っている。
     そのなかにつぎのようなのがある。アインシュタインの近所に一人の少女が住んでいたが、
     この少女の母親はあるとき、少女が、ときどきアインシュタインの家を訪問することに気がついた。
@@ -26,7 +26,7 @@ def main():
     アインシュタインが、このお嬢さんに問題の解法を説明したときに書いた紙が残っているが、
     その問題の一つは、与えられた二つの円Ｏ1とＯ2に対して共通接線を引け、というのであった。
     '''
-    s1 = '''
+    d1 = '''
     地球の神と殺された仲間たちを甦らせるため、重傷で入院中の悟空に代わり、悟飯、
     クリリン、ブルマの3人が神とピッコロの故郷であるナメック星へ向かう。だが、
     そこには地球で闘ったベジータや、界王すら畏怖する宇宙の帝王フリーザとその一味が
@@ -41,8 +41,8 @@ def main():
     フリーザ一味に殺された人々を蘇生させた。一方の悟空も爆発するナメック星を辛くも脱出、
     ヤードラット星に漂着し一命を取り留めた。
     '''
-    print(count_noun(s0))
-    print(count_noun(s1))
+    print(count_noun(d0))
+    print(count_noun(d1))
 
 
 if __name__ == '__main__':
