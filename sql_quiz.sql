@@ -1,21 +1,21 @@
-﻿#some sql solutions
-#chose Mysql
+﻿--some sql solutions
+--chose Mysql
 
-#https://www.hackerrank.com/challenges/revising-the-select-query-2/problem
+--https://www.hackerrank.com/challenges/revising-the-select-query-2/problem
 select name
 from city
 where
     countrycode = 'USA' and
     population > 120000
 
-#https://www.hackerrank.com/challenges/japanese-cities-name/problem
+--https://www.hackerrank.com/challenges/japanese-cities-name/problem
 select name
 from city
 where
     countrycode='JPN'
 
 
-#https://www.hackerrank.com/challenges/the-company/problem
+--https://www.hackerrank.com/challenges/the-company/problem
 select
     a.company_code,
     a.founder,
