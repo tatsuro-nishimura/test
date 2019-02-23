@@ -90,7 +90,7 @@ def a10_19(input, N):
         by=['pref_count'], ascending=False).reset_index(drop=True)
     print(df1.drop('pref_count', axis=1))
 
-def main():
+def solve_chapter_one():
     print(a00('stressed'))
     print(a01('パタトクカシーー'))
     print(a02('パトカー', 'タクシー'))
@@ -104,8 +104,14 @@ def main():
     print(cipher(cipher('I am an NLPer')))
     print(a09('Carl Friedrich Gauss was a German mathematician and physicist who made significant contributions to many fields in mathematics and sciences'))
     print('---' + '\n' + 'complete chapter one!' + '\n' + '---')
+
+def solve_chapter_two():
     a10_19('./hightemp.txt', 5)
     print('---' + '\n' + 'complete chapter two!(except linux com)' + '\n' + '---')
+
+def main():
+    solve_chapter_one()
+    solve_chapter_two()
 
 if __name__ == '__main__':
     main()
