@@ -86,7 +86,7 @@ def a10_19(input, N):
     df1 = pd.merge(df, df_col1_size, on='prefecture', how='left')
     df1 = df1.sort_values(
         by=['pref_count'], ascending=False).reset_index(drop=True)
-    print(df1.loc[:,df1.columns!='pref_count'])
+    print(df1.drop('pref_count', axis=1))
 
 def main():
     print(a00('stressed'))
