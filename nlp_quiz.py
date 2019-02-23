@@ -83,7 +83,9 @@ def a10_19(input, N):
         df.groupby('prefecture').size()).reset_index(
             ).rename(columns={0:'pref_count'})
     print(df_col1_size)
+    #'left join' on pandas df
     df1 = pd.merge(df, df_col1_size, on='prefecture', how='left')
+    #'order by' on pandas df
     df1 = df1.sort_values(
         by=['pref_count'], ascending=False).reset_index(drop=True)
     print(df1.drop('pref_count', axis=1))
