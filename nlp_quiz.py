@@ -131,10 +131,31 @@ def solve_chapter_three():
     print(list_sec2)
     print('---' + '\n' + 'complete Q20-23!' + '\n' + '---')
 
+def solve_chapter_four():
+    # mecab neko.txt -o neko.txt.mecab
+    f = open('neko.txt.mecab', 'r', encoding='utf8')
+    num, dic = 0, {}
+    for l in f:
+        if l != 'EOS\n':
+            dic[num] = l.replace('\t', ',').replace('\n','').split(',')
+            num += 1
+    num, dic_dosi_hyoso = 0, {}
+    for i in range(len(dic)):
+        if dic[i][1] == '動詞':
+            dic_dosi_hyoso[num] = dic[i][0]
+            num += 1
+    num, dic_dosi_genkei = 0, {}
+    for i in range(len(dic)):
+        if dic[i][1] == '動詞':
+            dic_dosi_genkei[num] = dic[i][7]
+            num += 1
+    print('---' + '\n' + 'complete Q30-32!' + '\n' + '---')
+
 def main():
-    solve_chapter_one()
-    solve_chapter_two()
-    solve_chapter_three()
+    #solve_chapter_one()
+    #solve_chapter_two()
+    #solve_chapter_three()
+    solve_chapter_four()
 
 if __name__ == '__main__':
     main()
