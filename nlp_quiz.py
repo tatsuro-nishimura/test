@@ -47,18 +47,11 @@ def a09(sentence):
 
 def a10_19(input, N):
     f = open(input)
-    num_row = 0
-    for i in f:
-        print(i)
-        num_row += 1
+    num_row = sum(1 for l in f)
     print(num_row)
     print('---' + '\n' + 'complete Q10! (except Linux com)' + '\n' + '---')
     f = open(input)
-    list0 = []
-    for i in f:
-        i = i.replace('\t', ' ')
-        print(i)
-        list0 += [i.replace('\n','').split(' ')]
+    list0 = [i.replace('\t', ' ').replace('\n','').split(' ') for i in f]
     print('---' + '\n' + 'complete Q11! (except Linux com)' + '\n' + '---')
     df = pd.DataFrame(list0).rename(
         columns={0:'prefecture', 1:'city', 2:'high_temprature', 3:'date'})
@@ -68,9 +61,8 @@ def a10_19(input, N):
         f.write('\n'.join([x for x in cols[i-1]]))
     print('---' + '\n' + 'complete Q12! (except Linux com)' + '\n' + '---')
     f = open('./col1.txt'), open('./col2.txt')
-    list = []
-    for i in range(num_row):
-        list += f[0].readline().replace('\n', '') +'\t'+ f[1].readline()
+    list = [f[0].readline().replace(
+        '\n', '') +'\t'+ f[1].readline() for i in range(num_row)]
     f = open('./cols.txt', mode='w')
     f.write(''.join(list))
     f.close()
@@ -152,8 +144,8 @@ def solve_chapter_four():
     print('---' + '\n' + 'complete Q30-32!' + '\n' + '---')
 
 def main():
-    solve_chapter_one()
-    #solve_chapter_two()
+    #solve_chapter_one()
+    solve_chapter_two()
     #solve_chapter_three()
     #solve_chapter_four()
 
