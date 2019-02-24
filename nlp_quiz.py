@@ -30,7 +30,7 @@ def a05(seq, n):
 
 def a06(str0, str1):
     set0, set1 = set(a05(str0, 2)), set(a05(str1, 2))
-    return set0|set1, set0&set1, set0-set1, set(['se'])<=set0, set(['se'])<=set1
+    return set0|set1, set0&set1, set0-set1, {'se'}<=set0, {'se'}<=set1
 
 def a07(x, y, z):
     return str(x)+'時の'+str(y)+'は'+str(z)
@@ -152,10 +152,10 @@ def solve_chapter_four():
     print('---' + '\n' + 'complete Q30-32!' + '\n' + '---')
 
 def main():
-    #solve_chapter_one()
+    solve_chapter_one()
     #solve_chapter_two()
     #solve_chapter_three()
-    solve_chapter_four()
+    #solve_chapter_four()
 
 if __name__ == '__main__':
     main()
