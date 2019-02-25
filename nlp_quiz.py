@@ -172,22 +172,22 @@ class Doc:
     def __init__(self, doc):
         self.doc = doc
 
-    def get_sentence_structure(self, num_sentence):
+    def get_sentence_structure(self, index_sentence):
         list = []
-        for chunk in self.doc[num_sentence].values():
+        for chunk in self.doc[index_sentence].values():
             list += [chunk.get_chunk_and_dst()]
         return list
 
-    def print_sentence(self, num_sentence):
-        for chunk in self.doc[num_sentence].values():#answer to Q30
+    def print_sentence(self, index_sentence):
+        for chunk in self.doc[index_sentence].values():#answer to Q30
             for morph in chunk.morphs:
                 morph.print()
 
-    def print_sentence2(self, num_sentence):
-        print(self.get_sentence_structure(num_sentence))#anster to Q31
+    def print_sentence2(self, index_sentence):
+        print(self.get_sentence_structure(index_sentence))#anster to Q31
 
-    def print_sentence3(self, num_sentence):
-        list = self.get_sentence_structure(num_sentence)
+    def print_sentence3(self, index_sentence):
+        list = self.get_sentence_structure(index_sentence)
         for chunk in list:#anster to Q32
             if chunk[1] == -1:
                 print(chunk[0])
@@ -195,29 +195,29 @@ class Doc:
                 print(chunk[0]+'\t'+list[chunk[1]][0])
 
 def add_scm_structure(f):
-    num_sentence, num_chunk, doc = -1, -1, {}
+    index_sentence, index_chunk, doc = -1, -1, {}
     for l in f:
         if l[0:3] == '* 0':
-            num_sentence += 1
-            num_chunk = 0
-            doc[num_sentence] = {}
-            doc[num_sentence][num_chunk] = Chunk(
+            index_sentence += 1
+            index_chunk = 0
+            doc[index_sentence] = {}
+            doc[index_sentence][index_chunk] = Chunk(
                 int(l.split(' ')[2].replace('D', '')))
         elif l[0] == '*':
-            num_chunk += 1
-            doc[num_sentence][num_chunk] = Chunk(
+            index_chunk += 1
+            doc[index_sentence][index_chunk] = Chunk(
                 int(l.split(' ')[2].replace('D', '')))
         if l[0] != '*' and l != 'EOS\n':
             word = l.replace('\n', '').replace('\t', ',').split(',')
-            doc[num_sentence][num_chunk].add_morph(
+            doc[index_sentence][index_chunk].add_morph(
                 Morph(word[0], word[7], word[1], word[2]))
         else:
             pass
-    for num_sentence in range(len(doc)):
-        for num_chunk in range(len(doc[num_sentence])):
-            dst = doc[num_sentence][num_chunk].dst
+    for index_sentence in range(len(doc)):
+        for index_chunk in range(len(doc[index_sentence])):
+            dst = doc[index_sentence][index_chunk].dst
             if dst != -1:
-                doc[num_sentence][dst].srcs += [num_chunk]
+                doc[index_sentence][dst].srcs += [index_chunk]
     return doc
 
 def solve_chapter_five():
