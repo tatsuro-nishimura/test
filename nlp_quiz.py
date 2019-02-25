@@ -8,10 +8,10 @@ import gzip
 import json
 
 
-def a00(str):
+def reverse_str(str):
     return str[::-1]
 
-def a01(str):
+def choose_odd_ch(str):
     return str[::2]
 
 def a02(str0, str1):
@@ -22,11 +22,11 @@ def a03(str):
 
 def a04(str):
     list0 = str.replace('.','').split()
-    list1 = [list0[i][0] if i in [0,4,5,6,7,8,14,15,18] else list0[i][0:2] for i in range(0,len(list0))]
-    return dict([(list1[i],i+1) for i in range(0,len(list1))])
+    list1 = [list0[i][0] if i in [0,4,5,6,7,8,14,15,18] else list0[i][0:2] for i in range(len(list0))]
+    return dict([(list1[i], i+1) for i in range(len(list1))])
 
 def a05(seq, n):
-    return [seq[i:i+n] for i in range(0,len(seq)-n+1)]
+    return [seq[i:i+n] for i in range(len(seq)-n+1)]
 
 def a06(str0, str1):
     set0, set1 = set(a05(str0, 2)), set(a05(str1, 2))
@@ -86,8 +86,8 @@ def a10_19(input, N):
     print(df1.drop('pref_count', axis=1))
 
 def solve_chapter_one():
-    print(a00('stressed'))
-    print(a01('パタトクカシーー'))
+    print(reverse_str('stressed'))
+    print(choose_odd_ch('パタトクカシーー'))
     print(a02('パトカー', 'タクシー'))
     print(a03('Now I need a drink, alcoholic of course, after the heavy lectures involving quantum mechanics.'))
     print(a04('Hi He Lied Because Boron Could Not Oxidize Fluorine. New Nations Might Also Sign Peace Security Clause. Arthur King Can.'))
