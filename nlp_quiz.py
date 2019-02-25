@@ -131,23 +131,106 @@ def solve_chapter_four():
         if l != 'EOS\n':
             dic[num] = l.replace('\t', ',').replace('\n','').split(',')
             num += 1
-    num, dic_dosi_hyoso = 0, {}
+    num, dic_verb_surface = 0, {}
     for i in range(len(dic)):
         if dic[i][1] == '動詞':
-            dic_dosi_hyoso[num] = dic[i][0]
+            dic_verb_surface[num] = dic[i][0]
             num += 1
-    num, dic_dosi_genkei = 0, {}
+    num, dic_verb_base = 0, {}
     for i in range(len(dic)):
         if dic[i][1] == '動詞':
-            dic_dosi_genkei[num] = dic[i][7]
+            dic_verb_base[num] = dic[i][7]
             num += 1
     print('---' + '\n' + 'complete Q30-32!' + '\n' + '---')
 
+class Morph:
+    def __init__(self, surface, base, pos, pos1):
+        self.surface = surface
+        self.base = base
+        self.pos = pos
+        self.pos1 = pos1
+
+    def print(self):
+        print([self.surface, self.base, self.pos, self.pos1])
+
+class Chunk:
+    def __init__(self, dst):
+        self.morphs = []
+        self.dst = dst
+        self.srcs = []
+
+    def add_morph(self, morph):
+        self.morphs += [morph]
+    def get_chunk_and_dst(self):
+        str = ''
+        for morph in self.morphs:
+            str += morph.surface
+        return str, self.dst
+
+class Doc:
+    def __init__(self, doc):
+        self.doc = doc
+
+    def print_sentence(self, num_sentence):
+        for chunk in self.doc[num_sentence].values():#answer to Q30
+            for morph in chunk.morphs:
+                morph.print()
+    def print_sentence2(self, num_sentence):
+        list = []
+        for chunk in self.doc[num_sentence].values():
+            list += [chunk.get_chunk_and_dst()]
+        print(list)#anster to Q31
+
+    def print_sentence3(self, num_sentence):
+        list = []
+        for chunk in self.doc[num_sentence].values():
+            list += [chunk.get_chunk_and_dst()]
+        for chunk in list:#anster to Q32
+            if chunk[1] == -1:
+                print(chunk[0])
+            else:
+                print(chunk[0]+'\t'+list[chunk[1]][0])
+
+def add_scm_structure(f):
+    num_sentence, num_chunk, doc = -1, -1, {}
+    for l in f:
+        if l[0:3] == '* 0':
+            num_sentence += 1
+            num_chunk = 0
+            doc[num_sentence] = {}
+            doc[num_sentence][num_chunk] = Chunk(
+                int(l.split(' ')[2].replace('D', '')))
+        elif l[0] == '*':
+            num_chunk += 1
+            doc[num_sentence][num_chunk] = Chunk(
+                int(l.split(' ')[2].replace('D', '')))
+        if l[0] != '*' and l != 'EOS\n':
+            word = l.replace('\n', '').replace('\t', ',').split(',')
+            doc[num_sentence][num_chunk].add_morph(
+                Morph(word[0], word[7], word[1], word[2]))
+        else:
+            pass
+    for num_sentence in range(len(doc)):
+        for num_chunk in range(len(doc[num_sentence])):
+            dst = doc[num_sentence][num_chunk].dst
+            if dst != -1:
+                doc[num_sentence][dst].srcs += [num_chunk]
+    return doc
+
+def solve_chapter_five():
+    #cabocha -f1 neko.txt -o neko.txt.cabocha
+    f = open('./neko.txt.cabocha')
+    doc = Doc(add_scm_structure(f))
+    doc.print_sentence(2)
+    doc.print_sentence2(7)
+    doc.print_sentence3(7)
+
 def main():
-    solve_chapter_one()
-    solve_chapter_two()
-    solve_chapter_three()
-    solve_chapter_four()
+    #solve_chapter_one()
+    #solve_chapter_two()
+    #solve_chapter_three()
+    #solve_chapter_four()
+    solve_chapter_five()
 
 if __name__ == '__main__':
     main()
