@@ -161,6 +161,7 @@ class Chunk:
 
     def add_morph(self, morph):
         self.morphs += [morph]
+
     def get_chunk_and_dst(self):
         str = ''
         for morph in self.morphs:
@@ -171,20 +172,22 @@ class Doc:
     def __init__(self, doc):
         self.doc = doc
 
+    def get_sentence_structure(self, num_sentence):
+        list = []
+        for chunk in self.doc[num_sentence].values():
+            list += [chunk.get_chunk_and_dst()]
+        return list
+
     def print_sentence(self, num_sentence):
         for chunk in self.doc[num_sentence].values():#answer to Q30
             for morph in chunk.morphs:
                 morph.print()
+
     def print_sentence2(self, num_sentence):
-        list = []
-        for chunk in self.doc[num_sentence].values():
-            list += [chunk.get_chunk_and_dst()]
-        print(list)#anster to Q31
+        print(self.get_sentence_structure(num_sentence))#anster to Q31
 
     def print_sentence3(self, num_sentence):
-        list = []
-        for chunk in self.doc[num_sentence].values():
-            list += [chunk.get_chunk_and_dst()]
+        list = self.get_sentence_structure(num_sentence)
         for chunk in list:#anster to Q32
             if chunk[1] == -1:
                 print(chunk[0])
