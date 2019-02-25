@@ -15,7 +15,7 @@ def choose_odd_ch(str):
     return str[::2]
 
 def a02(str0, str1):
-    return ''.join([x + y for (x, y) in zip(str0, str1)])
+    return ''.join([x + y for x, y in zip(str0, str1)])
 
 def a03(str):
     return [len(x) for x in re.sub('[,.]', '', str).split(' ')]
@@ -144,10 +144,10 @@ def solve_chapter_four():
     print('---' + '\n' + 'complete Q30-32!' + '\n' + '---')
 
 def main():
-    #solve_chapter_one()
+    solve_chapter_one()
     solve_chapter_two()
-    #solve_chapter_three()
-    #solve_chapter_four()
+    solve_chapter_three()
+    solve_chapter_four()
 
 if __name__ == '__main__':
     main()
