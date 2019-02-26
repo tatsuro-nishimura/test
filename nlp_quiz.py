@@ -126,21 +126,18 @@ def solve_chapter_three():
 def solve_chapter_four():
     # mecab neko.txt -o neko.txt.mecab
     f = open('neko.txt.mecab', 'r', encoding='utf8')
-    num, dic = 0, {}
+    list = []
     for l in f:
         if l != 'EOS\n':
-            dic[num] = l.replace('\t', ',').replace('\n','').split(',')
-            num += 1
-    num, dic_verb_surface = 0, {}
-    for i in range(len(dic)):
-        if dic[i][1] == '動詞':
-            dic_verb_surface[num] = dic[i][0]
-            num += 1
-    num, dic_verb_base = 0, {}
-    for i in range(len(dic)):
-        if dic[i][1] == '動詞':
-            dic_verb_base[num] = dic[i][7]
-            num += 1
+            list += [l.replace('\t', ',').replace('\n','').split(',')]
+    list_verb_surface = []
+    for i in range(len(list)):
+        if list[i][1] == '動詞':
+            list_verb_surface += [list[i][0]]
+    list_verb_base = []
+    for i in range(len(list)):
+        if list[i][1] == '動詞':
+            list_verb_base += [list[i][7]]
     print('---' + '\n' + 'complete Q30-32!' + '\n' + '---')
 
 class Morph:
@@ -174,43 +171,46 @@ class Doc:
 
     def get_sentence_structure(self, index_sentence):
         list = []
-        for chunk in self.doc[index_sentence].values():
+        for chunk in self.doc[index_sentence]:
             list += [chunk.get_chunk_and_dst()]
         return list
 
+    def get_chunks(self):
+        chunks = []
+        for index_sentence in range(len(self.doc)):
+            for chunk in self.doc[index_sentence]:
+                str = ''
+                for morph in chunk.morphs:
+                    str += morph.surface
+                chunks += [str]
+        return chunks
+
     def print_sentence(self, index_sentence):
-        for chunk in self.doc[index_sentence].values():#answer to Q30
+        for chunk in self.doc[index_sentence]:#answer to Q40
             for morph in chunk.morphs:
                 morph.print()
 
     def print_sentence2(self, index_sentence):
-        print(self.get_sentence_structure(index_sentence))#anster to Q31
+        print(self.get_sentence_structure(index_sentence))#answer to Q41
 
     def print_sentence3(self, index_sentence):
         list = self.get_sentence_structure(index_sentence)
-        for chunk in list:#anster to Q32
+        for chunk in list:#answer to Q42
             if chunk[1] == -1:
                 print(chunk[0])
             else:
                 print(chunk[0]+'\t'+list[chunk[1]][0])
 
 def add_scm_structure(f):
-    index_sentence, index_chunk, doc = -1, -1, {}
+    doc = []
     for l in f:
         if l[0:3] == '* 0':
-            index_sentence += 1
-            index_chunk = 0
-            doc[index_sentence] = {}
-            doc[index_sentence][index_chunk] = Chunk(
-                int(l.split(' ')[2].replace('D', '')))
+            doc += [[Chunk(int(l.split(' ')[2].replace('D', '')))]]
         elif l[0] == '*':
-            index_chunk += 1
-            doc[index_sentence][index_chunk] = Chunk(
-                int(l.split(' ')[2].replace('D', '')))
+            doc[-1] += [Chunk(int(l.split(' ')[2].replace('D', '')))]
         if l[0] != '*' and l != 'EOS\n':
             word = l.replace('\n', '').replace('\t', ',').split(',')
-            doc[index_sentence][index_chunk].add_morph(
-                Morph(word[0], word[7], word[1], word[2]))
+            doc[-1][-1].add_morph(Morph(word[0], word[7], word[1], word[2]))
         else:
             pass
     for index_sentence in range(len(doc)):
