@@ -159,47 +159,45 @@ class Chunk:
     def add_morph(self, morph):
         self.morphs += [morph]
 
-    def get_chunk_and_dst(self):
+    def get_str(self):
         str = ''
         for morph in self.morphs:
             str += morph.surface
-        return str, self.dst
+        return str
+    def has_pos(self, pos):
+        return pos in [morph.pos for morph in self.morphs]
 
 class Doc:
     def __init__(self, doc):
         self.doc = doc
 
-    def get_sentence_structure(self, index_sentence):
-        list = []
-        for chunk in self.doc[index_sentence]:
-            list += [chunk.get_chunk_and_dst()]
-        return list
-
-    def get_chunks(self):
-        chunks = []
-        for index_sentence in range(len(self.doc)):
-            for chunk in self.doc[index_sentence]:
-                str = ''
-                for morph in chunk.morphs:
-                    str += morph.surface
-                chunks += [str]
-        return chunks
-
     def print_sentence(self, index_sentence):
-        for chunk in self.doc[index_sentence]:#answer to Q40
+        for chunk in self.doc[index_sentence]:
             for morph in chunk.morphs:
                 morph.print()
 
-    def print_sentence2(self, index_sentence):
-        print(self.get_sentence_structure(index_sentence))#answer to Q41
+    def print_sentence1(self, index_sentence):
+        list = []
+        for chunk in self.doc[index_sentence]:
+            list += [(chunk.get_str(), chunk.dst)]
+        print(list)
 
-    def print_sentence3(self, index_sentence):
-        list = self.get_sentence_structure(index_sentence)
-        for chunk in list:#answer to Q42
-            if chunk[1] == -1:
-                print(chunk[0])
+    def print_sentence2(self, index_sentence):
+        chunks = self.doc[index_sentence]
+        for chunk in chunks:
+            if chunk.dst == -1:
+                print(chunk.get_str())
             else:
-                print(chunk[0]+'\t'+list[chunk[1]][0])
+                print(chunk.get_str() + '\t' + chunks[chunk.dst].get_str())
+
+    def print_chunks0(self, index_sentence, pos0, pos1):
+        chunks = self.doc[index_sentence]
+        for chunk in chunks:
+            if chunk.dst == -1:
+                pass
+            elif chunk.has_pos(pos0) and chunks[chunk.dst].has_pos(pos1):
+                print(chunk.get_str() + '\t' + chunks[chunk.dst].get_str())
+
 
 def add_scm_structure(f):
     doc = []
@@ -224,9 +222,10 @@ def solve_chapter_five():
     #cabocha -f1 neko.txt -o neko.txt.cabocha
     f = open('./neko.txt.cabocha')
     doc = Doc(add_scm_structure(f))
-    doc.print_sentence(2)
-    doc.print_sentence2(7)
-    doc.print_sentence3(7)
+    doc.print_sentence(3)#answer to Q40
+    doc.print_sentence1(8)#answer to Q41
+    doc.print_sentence2(8)#answer to Q42
+    doc.print_chunks0(5, '名詞', '動詞')#answer to Q43
 
 def main():
     #solve_chapter_one()
