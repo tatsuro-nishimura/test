@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import gzip
 import json
+import pydotplus as pydot
 
 
 def reverse_str(str):
@@ -198,6 +199,16 @@ class Doc:
             elif chunk.has_pos(pos0) and chunks[chunk.dst].has_pos(pos1):
                 print(chunk.get_str() + '\t' + chunks[chunk.dst].get_str())
 
+    def get_sentence(self, index_sentence):
+        list = []
+        chunks = self.doc[index_sentence]
+        for chunk in chunks:
+            if chunk.dst == -1:
+                pass
+            else:
+                list += [(chunk.get_str(), chunks[chunk.dst].get_str())]
+        return list
+
 
 def add_scm_structure(f):
     doc = []
@@ -226,6 +237,8 @@ def solve_chapter_five():
     doc.print_sentence1(8)#answer to Q41
     doc.print_sentence2(8)#answer to Q42
     doc.print_chunks0(5, '名詞', '動詞')#answer to Q43
+    pydot.graph_from_edges(doc.get_sentence(
+        8), directed = True).write_png('relation_tree.png')
 
 def main():
     #solve_chapter_one()
