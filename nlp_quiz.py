@@ -214,9 +214,9 @@ def add_scm_structure(f):
     doc = []
     for l in f:
         if l[0:3] == '* 0':
-            doc += [[Chunk(int(l.split(' ')[2].replace('D', '')))]]
+            doc += [[Chunk(dst=int(l.split(' ')[2].replace('D', '')))]]
         elif l[0] == '*':
-            doc[-1] += [Chunk(int(l.split(' ')[2].replace('D', '')))]
+            doc[-1] += [Chunk(dst=int(l.split(' ')[2].replace('D', '')))]
         if l[0] != '*' and l != 'EOS\n':
             word = l.replace('\n', '').replace('\t', ',').split(',')
             doc[-1][-1].add_morph(Morph(word[0], word[7], word[1], word[2]))
@@ -238,7 +238,7 @@ def solve_chapter_five():
     doc.print_sentence2(8)#answer to Q42
     doc.print_chunks0(5, '名詞', '動詞')#answer to Q43
     pydot.graph_from_edges(doc.get_sentence(
-        8), directed = True).write_png('relation_tree.png')
+        4), directed = True).write_png('relation_tree.png')
 
 def main():
     #solve_chapter_one()
