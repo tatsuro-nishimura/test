@@ -194,18 +194,14 @@ class Doc:
     def print_chunks0(self, index_sentence, pos0, pos1):
         chunks = self.doc[index_sentence]
         for chunk in chunks:
-            if chunk.dst == -1:
-                pass
-            elif chunk.has_pos(pos0) and chunks[chunk.dst].has_pos(pos1):
+            if chunk.dst != -1 and chunk.has_pos(pos0) and chunks[chunk.dst].has_pos(pos1):
                 print(chunk.get_str() + '\t' + chunks[chunk.dst].get_str())
 
     def get_sentence(self, index_sentence):
         list = []
         chunks = self.doc[index_sentence]
         for chunk in chunks:
-            if chunk.dst == -1:
-                pass
-            else:
+            if chunk.dst != -1:
                 list += [(chunk.get_str(), chunks[chunk.dst].get_str())]
         return list
 
@@ -220,8 +216,6 @@ def add_scm_structure(f):
         if l[0] != '*' and l != 'EOS\n':
             word = l.replace('\n', '').replace('\t', ',').split(',')
             doc[-1][-1].add_morph(Morph(word[0], word[7], word[1], word[2]))
-        else:
-            pass
     for index_sentence in range(len(doc)):
         for index_chunk in range(len(doc[index_sentence])):
             dst = doc[index_sentence][index_chunk].dst
