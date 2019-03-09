@@ -206,7 +206,7 @@ class Doc:
         return list
 
 
-def add_scm_structure(f):
+def add_scm_structure(f):#'scm' is the abbreviation for 'sentence, chunk, morph'
     doc = []
     for l in f:
         if l[0:3] == '* 0':
