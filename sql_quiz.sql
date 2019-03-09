@@ -19,23 +19,23 @@ where
 select
     a.company_code,
     a.founder,
-    count(distinct b.lead_manager_code) num_lead_manager,
-    count(distinct c.senior_manager_code) num_senior_manager,
-    count(distinct d.manager_code) num_manager,
-    count(distinct e.employee_code) num_employee
+    count(distinct b.lead_manager_code) as num_lead_manager,--'as ' can be omitted
+    count(distinct c.senior_manager_code) as num_senior_manager,
+    count(distinct d.manager_code) as num_manager,
+    count(distinct e.employee_code) as num_employee
 from
-    (((company a
-    left join
-    lead_manager b
+    (((company as a
+    left join--or 'left outer join'
+    lead_manager as b--'as ' can be omitted
         on a.company_code = b.company_code)
     left join
-    senior_manager c
+    senior_manager as c
         on b.lead_manager_code = c.lead_manager_code)
     left join
-    manager d
+    manager as d
         on c.senior_manager_code = d.senior_manager_code)
     left join
-    employee e
+    employee as e
         on d.manager_code = e.manager_code
 group by company_code, founder
 order by company_code
