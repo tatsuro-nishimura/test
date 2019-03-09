@@ -1,0 +1,7 @@
+#calculate some values of Riemann zeta function
+```{r}
+library(pracma)
+zeta(2i)
+zeta(1+1i)
+zeta(-1+1i)
+```
