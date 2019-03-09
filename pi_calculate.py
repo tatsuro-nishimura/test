@@ -24,7 +24,7 @@ class Pi:
     # define calculation of pi by montecarlo
     def calculate_pi_monte(self, number_monte):
         counter = 0
-        for i in range(0, number_monte):
+        for i in range(number_monte):
             x = np.random.rand(1000)
             y = np.random.rand(1000)
             counter += sum(x**2 + y**2 < 1)
