@@ -25,7 +25,7 @@ select
     count(distinct e.employee_code) as num_employee
 from
     (((company as a
-    left join--or 'left outer join'
+    left join--this is equivalent to 'left outer join'
     lead_manager as b--'as ' can be omitted
         on a.company_code = b.company_code)
     left join
