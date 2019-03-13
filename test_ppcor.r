@@ -2,7 +2,8 @@
 library(ppcor)
 result <- pcor(iris[,-5])$estimate
 result
-result[1,2]
+pc_12_34_1 <- result[1,2]
+pc_12_34_1
 
 # calculate partial correlation coefficients by recursive formula
 calc0 <- function(x_12,x_13,x_23){
@@ -12,12 +13,18 @@ pcor0 <- function(x,y,z){
   return(calc0(cor(x,y),cor(x,z),cor(y,z)))
 }
 
-p_12_3 <- pcor0(iris[,1],iris[,2],iris[,3])
-p_14_3 <- pcor0(iris[,1],iris[,4],iris[,3])
-p_24_3 <- pcor0(iris[,2],iris[,4],iris[,3])
-calc0(p_12_3,p_14_3,p_24_3)
+pc_12_3 <- pcor0(iris[,1],iris[,2],iris[,3])
+pc_14_3 <- pcor0(iris[,1],iris[,4],iris[,3])
+pc_24_3 <- pcor0(iris[,2],iris[,4],iris[,3])
+pc_12_34_2 <- calc0(pc_12_3,pc_14_3,pc_24_3)
+pc_12_34_2
 
-p_12_4 <- pcor0(iris[,1],iris[,2],iris[,4])
-p_13_4 <- pcor0(iris[,1],iris[,3],iris[,4])
-p_23_4 <- pcor0(iris[,2],iris[,3],iris[,4])
-calc0(p_12_4,p_13_4,p_23_4)
+pc_12_4 <- pcor0(iris[,1],iris[,2],iris[,4])
+pc_13_4 <- pcor0(iris[,1],iris[,3],iris[,4])
+pc_23_4 <- pcor0(iris[,2],iris[,3],iris[,4])
+pc_12_34_3 <- calc0(pc_12_4,pc_13_4,pc_23_4)
+pc_12_34_3
+
+pc_12_34_1 - pc_12_34_2 == 0
+pc_12_34_2 - pc_12_34_3 == 0
+abs(pc_12_34_2 - pc_12_34_3) < 10^{-10}
