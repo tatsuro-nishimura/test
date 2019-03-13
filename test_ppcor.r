@@ -1,6 +1,7 @@
 # calculate partial correlation coefficients by ppcor
 library(ppcor)
 result <- pcor(iris[,-5])$estimate
+result
 result[1,2]
 
 # calculate partial correlation coefficients by recursive formula
