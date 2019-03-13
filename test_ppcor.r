@@ -28,3 +28,15 @@ pc_12_34_3
 pc_12_34_1 - pc_12_34_2 == 0
 pc_12_34_2 - pc_12_34_3 == 0
 abs(pc_12_34_2 - pc_12_34_3) < 10^{-10}
+
+# calculate partial correlation coefficients by gramSchmidt
+library(pracma)
+pcor1 <- function(x,y,z,data){
+  vecs <- scale(data)
+  o_vecs <- gramSchmidt(vecs[,z])$Q
+  vecs[,x] <- vecs[,x] - apply(o_vecs%*%diag(c((t(vecs[,x])%*%o_vecs))),1,sum)
+  vecs[,y] <- vecs[,y] - apply(o_vecs%*%diag(c((t(vecs[,y])%*%o_vecs))),1,sum)
+  result <- c(vecs[,x]%*%vecs[,y])/sqrt(c(vecs[,x]%*%vecs[,x])*c(vecs[,y]%*%vecs[,y]))
+  return(result)
+}
+pcor1(1,2,c(3,4),iris[,-5])
