@@ -36,9 +36,16 @@ cosine <- function(x,y){
 }
 pcor1 <- function(x,y,z,data){
   vecs <- scale(data)
-  L_z_orth_basis <- gramSchmidt(vecs[,z])$Q #L means linear space
-  vec_x_proj_to_L_z_perp <- vecs[,x] - apply(L_z_orth_basis%*%diag(c((t(vecs[,x])%*%L_z_orth_basis))),1,sum)
-  vec_y_proj_to_L_z_perp <- vecs[,y] - apply(L_z_orth_basis%*%diag(c((t(vecs[,y])%*%L_z_orth_basis))),1,sum)
+  if(length(z) > 1){
+    L_z_orth_basis <- gramSchmidt(vecs[,z])$Q
+    vec_x_proj_to_L_z_perp <- vecs[,x] - apply(L_z_orth_basis%*%diag(c((t(vecs[,x])%*%L_z_orth_basis))),1,sum) #L means linear space
+    vec_y_proj_to_L_z_perp <- vecs[,y] - apply(L_z_orth_basis%*%diag(c((t(vecs[,y])%*%L_z_orth_basis))),1,sum)
+  }
+  if(length(z) == 1){
+    n_vec_z <- vecs[,z]/sqrt(c(vecs[,z]%*%vecs[,z]))
+    vec_x_proj_to_L_z_perp <- vecs[,x] - c(vecs[,x]%*%n_vec_z)*n_vec_z
+    vec_y_proj_to_L_z_perp <- vecs[,y] - c(vecs[,y]%*%n_vec_z)*n_vec_z
+  }
   return(cosine(vec_x_proj_to_L_z_perp, vec_y_proj_to_L_z_perp))
 }
-pcor1(1,2,c(3,4),iris[,-5])
+pcor1(1,2,c(3),iris[,-5])
