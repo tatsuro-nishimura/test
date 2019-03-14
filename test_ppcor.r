@@ -31,12 +31,14 @@ abs(pc_12_34_2 - pc_12_34_3) < 10^{-10}
 
 # calculate partial correlation coefficients by gramSchmidt
 library(pracma)
+cosine <- function(x,y){
+  return(c(x%*%y)/sqrt(c(x%*%x)*c(y%*%y)))
+}
 pcor1 <- function(x,y,z,data){
   vecs <- scale(data)
-  o_vecs <- gramSchmidt(vecs[,z])$Q
-  vecs[,x] <- vecs[,x] - apply(o_vecs%*%diag(c((t(vecs[,x])%*%o_vecs))),1,sum)
-  vecs[,y] <- vecs[,y] - apply(o_vecs%*%diag(c((t(vecs[,y])%*%o_vecs))),1,sum)
-  result <- c(vecs[,x]%*%vecs[,y])/sqrt(c(vecs[,x]%*%vecs[,x])*c(vecs[,y]%*%vecs[,y]))
-  return(result)
+  L_z_orth_basis <- gramSchmidt(vecs[,z])$Q#L means linear space
+  vec_x_proj <- vecs[,x] - apply(L_z_orth_basis%*%diag(c((t(vecs[,x])%*%L_z_orth_basis))),1,sum)
+  vec_y_proj <- vecs[,y] - apply(L_z_orth_basis%*%diag(c((t(vecs[,y])%*%L_z_orth_basis))),1,sum)
+  return(cosine(vec_x_proj,vec_y_proj))
 }
 pcor1(1,2,c(3,4),iris[,-5])
