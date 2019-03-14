@@ -37,9 +37,9 @@ cosine <- function(x,y){
 pcor1 <- function(x,y,z,data){
   vecs <- scale(data)
   if(length(z) > 1){
-    L_z_orth_basis <- gramSchmidt(vecs[,z])$Q
-    vec_x_proj_to_L_z_perp <- vecs[,x] - apply(L_z_orth_basis%*%diag(c((t(vecs[,x])%*%L_z_orth_basis))),1,sum) #L means linear space
-    vec_y_proj_to_L_z_perp <- vecs[,y] - apply(L_z_orth_basis%*%diag(c((t(vecs[,y])%*%L_z_orth_basis))),1,sum)
+    L_z_orth_n_basis <- gramSchmidt(vecs[,z])$Q
+    vec_x_proj_to_L_z_perp <- vecs[,x] - apply(L_z_orth_n_basis%*%diag(c((t(vecs[,x])%*%L_z_orth_n_basis))),1,sum) #L means linear space
+    vec_y_proj_to_L_z_perp <- vecs[,y] - apply(L_z_orth_n_basis%*%diag(c((t(vecs[,y])%*%L_z_orth_n_basis))),1,sum)
   }
   if(length(z) == 1){
     n_vec_z <- vecs[,z]/sqrt(c(vecs[,z]%*%vecs[,z]))
