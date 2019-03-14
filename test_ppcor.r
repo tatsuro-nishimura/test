@@ -49,3 +49,4 @@ pcor1 <- function(x,y,z,data){
   return(cosine(vec_x_proj_to_L_z_perp, vec_y_proj_to_L_z_perp))
 }
 pcor1(1,2,c(3),iris[,-5])
+pcor1(1,2,c(3,4),iris[,-5])
