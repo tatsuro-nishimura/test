@@ -17,3 +17,8 @@ coefficients(result,s="lambda.min")
 # Ridge regression
 result <- cv.glmnet(as.matrix(iris[,1:3]),as.matrix(iris[,4],ncol=1),alpha = 0)
 coefficients(result,s="lambda.min")
+
+# multinomial logistic regression
+result <- cv.glmnet(as.matrix(iris[,-5]),as.matrix(iris[,5],ncol=1), family="multinomial", type.multinomial="grouped")
+pred <- predict(result, newx=as.matrix(iris[,-5]), type="class")
+table(pred, iris[,5])
