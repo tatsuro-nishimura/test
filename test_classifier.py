@@ -16,7 +16,7 @@ def logisticfunc(r):
 
 def print_cvs_and_cm(iris, clf):
     cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
-    scores = cross_val_score(clf, iris.data, iris.target, cv=cv)
+    scores = cross_val_score(clf, iris.data, iris.target, cv=cv, scoring='f1_macro')
     print('\n' + 'cross validation score')
     print(scores.mean())
     clf.fit(iris.data, iris.target)
