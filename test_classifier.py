@@ -4,11 +4,13 @@ from sklearn.model_selection import ShuffleSplit
 from sklearn.linear_model import Perceptron
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import confusion_matrix
+from xgboost import XGBClassifier
 import numpy as np
 
 def logisticfunc(r):
@@ -50,12 +52,20 @@ def main():
     clf = RandomForestClassifier(n_estimators=10, max_depth=2)
     print_cvs_and_cm(iris, clf)
 
+    print('\n' + 'extra trees')
+    clf = ExtraTreesClassifier(max_depth=2)
+    print_cvs_and_cm(iris, clf)
+
     print('\n' + 'adaboost')
     clf = AdaBoostClassifier(n_estimators=10)
     print_cvs_and_cm(iris, clf)
 
     print('\n' + 'gradient boost')
     clf = GradientBoostingClassifier(n_estimators=10)
+    print_cvs_and_cm(iris, clf)
+
+    print('\n' + 'xgboost')
+    clf = XGBClassifier(max_depth=2)
     print_cvs_and_cm(iris, clf)
 
     print('\n' + 'SVM linear')
@@ -73,7 +83,7 @@ def main():
 
     print('\n' + 'Multi-layer perceptron')
     clf = MLPClassifier(hidden_layer_sizes=(10,), activation='logistic',
-                        max_iter=2000, solver='adam')
+                        max_iter=2000, solver='adam', random_state=0)
     print_cvs_and_cm(iris, clf, mlp=1)
 
 if __name__ == '__main__':
