@@ -5,6 +5,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.svm import SVR
 from sklearn.neural_network import MLPRegressor
 from xgboost import XGBRegressor
@@ -33,6 +34,10 @@ def main():
 
     print('\n' + 'adaboost')
     reg = AdaBoostRegressor(n_estimators=10)
+    print_cv_score(reg, diabetes.data, diabetes.target)
+
+    print('\n' + 'gradient boost')
+    reg = GradientBoostingRegressor(n_estimators=10)
     print_cv_score(reg, diabetes.data, diabetes.target)
 
     print('\n' + 'xgboost')
