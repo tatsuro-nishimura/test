@@ -61,7 +61,7 @@ def print_cvs(models, params, model_name, data, target, cv, scoring):
 
 
 def main():
-    cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
+    cv = ShuffleSplit(n_splits=7, test_size=.25, random_state=0)
     scoring = 'r2'
     models = get_models()
     params = get_params()

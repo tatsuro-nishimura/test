@@ -9,8 +9,9 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.gaussian_process.kernels import RBF
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
@@ -33,7 +34,8 @@ def get_models():
     dict['gradient boost'] = GradientBoostingClassifier()
     dict['xgboost'] = XGBClassifier()
     dict['gaussian_process'] = GaussianProcessClassifier()
-    dict['QDA'] = QuadraticDiscriminantAnalysis()
+    dict['linear_discriminant_analysis'] = LinearDiscriminantAnalysis()
+    dict['quadratic_discriminant_analysis'] = QuadraticDiscriminantAnalysis()
     dict['SVM linear'] = SVC()
     dict['SVM poly'] = SVC()
     dict['SVM rbf'] = SVC()
@@ -52,7 +54,8 @@ def get_params():
     dict['gradient boost'] = {'n_estimators': [10]}
     dict['xgboost'] = {'max_depth': [2]}
     dict['gaussian_process'] = {'kernel': [1.0 * RBF(1.0)]}
-    dict['QDA'] = {}
+    dict['linear_discriminant_analysis'] = {}
+    dict['quadratic_discriminant_analysis'] = {}
     dict['SVM linear'] = {
         'kernel': ['linear'], 'probability': [True],
         'decision_function_shape': ['ovr']}
