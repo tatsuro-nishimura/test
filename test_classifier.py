@@ -56,15 +56,18 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, iris=0):
     param = params[model_name]
     model_cv = GridSearchCV(model, param, cv=cv, scoring='f1_macro')
     model_cv.fit(data, target)
+    print('\n')
     print('\n' + model_name)
     print('\n' + 'best parameter')
-    print(model_cv.best_params_)
+    best_param = model_cv.best_params_
+    print(best_param)
     print('\n' + 'cross validation score')
     print(model_cv.best_score_)
     print('\n' + 'confusion matrix')
     print(confusion_matrix(target, model_cv.predict(data)))
     if (model_name == 'Multi-layer perceptron'
-    and len(model_cv.best_params_['hidden_layer_sizes']) == 1):
+        and len(best_param['hidden_layer_sizes']) == 1
+        and best_param['activation'] == 'logistic'):
         model = model_cv.best_estimator_
         print('confusion matrix from coefficients')
         print(confusion_matrix(target,
