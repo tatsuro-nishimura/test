@@ -1,6 +1,6 @@
 from sklearn.datasets import load_iris
-from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import Perceptron
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -16,75 +16,77 @@ import numpy as np
 def logisticfunc(r):
     return(1/(1 + np.exp(-r)))
 
-def print_cvs_and_cm(iris, clf, perc = 0, mlp = 0):
-    cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
-    scores = cross_val_score(clf, iris.data, iris.target, cv=cv, scoring='f1_macro')
+def get_models():
+    dict = {}
+    dict['perceptron'] = Perceptron()
+    dict['decision tree'] = DecisionTreeClassifier()
+    dict['randomforest'] = RandomForestClassifier()
+    dict['extra trees'] = ExtraTreesClassifier()
+    dict['adaboost'] = AdaBoostClassifier()
+    dict['gradient boost'] = GradientBoostingClassifier()
+    dict['xgboost'] = XGBClassifier()
+    dict['SVM linear'] = SVC()
+    dict['SVM poly'] = SVC()
+    dict['SVM rbf'] = SVC()
+    dict['Multi-layer perceptron'] = MLPClassifier()
+    return dict
+
+def get_params():
+    dict = {}
+    dict['perceptron'] = {'n_iter': [200]}
+    dict['decision tree'] = {'max_depth': [2]}
+    dict['randomforest'] = {'n_estimators': [10], 'max_depth': [2]}
+    dict['extra trees'] = {'max_depth': [2]}
+    dict['adaboost'] = {'n_estimators': [10]}
+    dict['gradient boost'] = {'n_estimators': [10]}
+    dict['xgboost'] = {'max_depth': [2]}
+    dict['SVM linear'] = {
+        'kernel': ['linear'], 'probability': [True],
+        'decision_function_shape': ['ovr']}
+    dict['SVM poly'] = {
+        'kernel': ['poly'], 'probability': [True], 'degree': [3]}
+    dict['SVM rbf'] = {'kernel': ['rbf'], 'probability': [True]}
+    dict['Multi-layer perceptron'] = {
+        'hidden_layer_sizes': [(10,)], 'activation': ['logistic'],
+        'max_iter': [2000], 'solver': ['adam'], 'random_state': [0]}
+    return dict
+
+def print_cvs_and_cm(models, params, model_name, data, target, cv):
+    model = models[model_name]
+    param = params[model_name]
+    model_cv = GridSearchCV(model, param, cv=cv, scoring='f1_macro')
+    model_cv.fit(data, target)
+    print('\n' + model_name)
+    print('\n' + 'best parameter')
+    print(model_cv.best_params_)
     print('\n' + 'cross validation score')
-    print(scores.mean())
-    clf.fit(iris.data, iris.target)
+    print(model_cv.best_score_)
     print('\n' + 'confusion matrix')
-    print(confusion_matrix(iris.target, clf.predict(iris.data)))
-    if mlp == 1:
+    print(confusion_matrix(target, model_cv.predict(data)))
+    if model_name == 'Multi-layer perceptron':
+        model = model_cv.best_estimator_
         print('confusion matrix from coefficients')
-        print(confusion_matrix(iris.target,
+        print(confusion_matrix(target,
               np.argmax(logisticfunc(np.dot(logisticfunc
-                        (np.dot(np.array(iris.data), clf.coefs_[0])
-                         + clf.intercepts_[0]), clf.coefs_[1])
-                         + clf.intercepts_[1]), axis=1)))
-    if perc == 1:
+                        (np.dot(np.array(data), model.coefs_[0])
+                         + model.intercepts_[0]), model.coefs_[1])
+                         + model.intercepts_[1]), axis=1)))
+    if model_name == 'perceptron':
+        model = model_cv.best_estimator_
         print('confusion matrix from coefficients')
-        print(confusion_matrix(iris.target, np.argmax(np.dot(clf.coef_,
-              np.array(iris.data).T).T + clf.intercept_, axis=1)))
+        print(confusion_matrix(target, np.argmax(np.dot(model.coef_,
+              np.array(data).T).T + model.intercept_, axis=1)))
 
 
 def main():
-    iris = load_iris()
-
-    print('\n' + 'perceptron')
-    clf = Perceptron(n_iter=200)
-    print_cvs_and_cm(iris, clf, perc=1)
-
-    print('\n' + 'decision tree')
-    clf = DecisionTreeClassifier(max_depth=2)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'randomforest')
-    clf = RandomForestClassifier(n_estimators=10, max_depth=2)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'extra trees')
-    clf = ExtraTreesClassifier(max_depth=2)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'adaboost')
-    clf = AdaBoostClassifier(n_estimators=10)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'gradient boost')
-    clf = GradientBoostingClassifier(n_estimators=10)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'xgboost')
-    clf = XGBClassifier(max_depth=2)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'SVM linear')
-    clf = SVC(kernel='linear', probability=True,
-              decision_function_shape='ovr')
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'SVM poly')
-    clf = SVC(kernel='poly', probability=True, degree=3)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'SVM rbf')
-    clf = SVC(kernel='rbf', probability=True)
-    print_cvs_and_cm(iris, clf)
-
-    print('\n' + 'Multi-layer perceptron')
-    clf = MLPClassifier(hidden_layer_sizes=(10,), activation='logistic',
-                        max_iter=2000, solver='adam', random_state=0)
-    print_cvs_and_cm(iris, clf, mlp=1)
+    cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
+    models = get_models()
+    params = get_params()
+    iris= load_iris()
+    data = iris.data
+    target = iris.target
+    for model_name in models.keys():
+        print_cvs_and_cm(models, params, model_name, data, target, cv)
 
 if __name__ == '__main__':
     main()
