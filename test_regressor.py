@@ -1,6 +1,6 @@
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import ShuffleSplit
 from sklearn import datasets
+from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import AdaBoostRegressor
@@ -10,58 +10,66 @@ from sklearn.svm import SVR
 from sklearn.neural_network import MLPRegressor
 from xgboost import XGBRegressor
 
-def print_cv_score(reg, data, target):
-    cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
-    scores = cross_val_score(reg, data, target.ravel(), cv=cv, scoring='r2')
-    print('\n' + 'Cross Validation Score')
-    print(scores.mean())
+def get_models():
+    dict = {}
+    dict['decision tree'] = DecisionTreeRegressor()
+    dict['randomforest'] = RandomForestRegressor()
+    dict['extra trees'] = ExtraTreesRegressor()
+    dict['adaboost'] = AdaBoostRegressor()
+    dict['gradient boost'] = GradientBoostingRegressor()
+    dict['xgboost'] = XGBRegressor()
+    dict['SVM linear'] = SVR()
+    dict['SVM poly'] = SVR()
+    dict['SVM rbf'] = SVR()
+    dict['Multi-layer perceptron'] = MLPRegressor()
+    return dict
+
+def get_params():
+    dict = {}
+    dict['decision tree'] = {'max_depth': [2]}
+    dict['randomforest'] = {'max_depth': [2]}
+    dict['extra trees'] = {'max_depth': [2]}
+    dict['adaboost'] = {'n_estimators': [10]}
+    dict['gradient boost'] = {'n_estimators': [10]}
+    dict['xgboost'] = {'max_depth': [2]}
+    dict['SVM linear'] = {
+        'kernel': ['linear'], 'C': [1000]}
+    dict['SVM poly'] = {
+        'kernel': ['poly'], 'C': [1000], 'gamma': ['auto'], 'degree': [3],
+        'epsilon': [.1], 'coef0': [1]}
+    dict['SVM rbf'] = {'kernel': ['rbf'], 'C': [1000], 'gamma': [.1]}
+    dict['Multi-layer perceptron'] = {
+        'hidden_layer_sizes': [(5,)], 'activation': ['relu'],
+        'learning_rate': ['adaptive'], 'learning_rate_init': [.01],
+        'alpha': [.01], 'max_iter': [1000], 'solver': ['adam'],
+        'random_state': [0]}
+    return dict
+
+def print_cvs(models, params, model_name, data, target, cv, scoring):
+    model = models[model_name]
+    param = params[model_name]
+    model_cv = GridSearchCV(model, param, cv=cv, scoring=scoring)
+    model_cv.fit(data, target)
+    print('\n')
+    print('\n' + model_name)
+    print('\n' + 'scoring: ' + scoring)
+    print('\n' + 'best parameter')
+    best_param = model_cv.best_params_
+    print(best_param)
+    print('\n' + 'cross validation score')
+    print(model_cv.best_score_)
 
 
 def main():
+    cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
+    scoring = 'r2'
+    models = get_models()
+    params = get_params()
     diabetes = datasets.load_diabetes()
-
-    print('\n' + 'decision tree')
-    reg = DecisionTreeRegressor(max_depth=2)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'random forest')
-    reg = RandomForestRegressor(max_depth=2)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'extra trees')
-    reg = ExtraTreesRegressor(max_depth=2)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'adaboost')
-    reg = AdaBoostRegressor(n_estimators=10)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'gradient boost')
-    reg = GradientBoostingRegressor(n_estimators=10)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'xgboost')
-    reg = XGBRegressor(max_depth=2)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'SVM linear')
-    reg = SVR(kernel='linear', C=1000)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'SVM poly')
-    reg = SVR(kernel='poly', C=1000, gamma='auto', degree=3, epsilon=.1, coef0=1)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'SVM rbf')
-    reg = SVR(kernel='rbf', C=1000, gamma=0.1)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
-    print('\n' + 'Multi-layer perceptron')
-    reg = MLPRegressor(hidden_layer_sizes=(5,), activation='relu', solver='adam',
-        learning_rate='adaptive', max_iter=1000, learning_rate_init=0.01,
-        alpha=0.01, random_state=0)
-    print_cv_score(reg, diabetes.data, diabetes.target)
-
+    data = diabetes.data
+    target = diabetes.target
+    for model_name in models.keys():
+        print_cvs(models, params, model_name, data, target, cv, scoring)
 
 if __name__ == '__main__':
     main()

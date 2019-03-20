@@ -51,13 +51,14 @@ def get_params():
         'max_iter': [2000], 'solver': ['adam'], 'random_state': [0]}
     return dict
 
-def print_cvs_and_cm(models, params, model_name, data, target, cv, iris=0):
+def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
     model = models[model_name]
     param = params[model_name]
-    model_cv = GridSearchCV(model, param, cv=cv, scoring='f1_macro')
+    model_cv = GridSearchCV(model, param, cv=cv, scoring=scoring)
     model_cv.fit(data, target)
     print('\n')
     print('\n' + model_name)
+    print('\n' + 'scoring: ' + scoring)
     print('\n' + 'best parameter')
     best_param = model_cv.best_params_
     print(best_param)
@@ -84,13 +85,14 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, iris=0):
 
 def main():
     cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
+    scoring = 'f1_macro'
     models = get_models()
     params = get_params()
     iris= load_iris()
     data = iris.data
     target = iris.target
     for model_name in models.keys():
-        print_cvs_and_cm(models, params, model_name, data, target, cv, iris=1)
+        print_cvs_and_cm(models, params, model_name, data, target, cv, scoring)
 
 if __name__ == '__main__':
     main()
