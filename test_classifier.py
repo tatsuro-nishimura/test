@@ -2,11 +2,16 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import Perceptron
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import confusion_matrix
@@ -19,12 +24,16 @@ def logisticfunc(r):
 def get_models():
     dict = {}
     dict['perceptron'] = Perceptron()
+    dict['naive_bayes'] = GaussianNB()
+    dict['k-neighbor'] = KNeighborsClassifier()
     dict['decision tree'] = DecisionTreeClassifier()
     dict['randomforest'] = RandomForestClassifier()
     dict['extra trees'] = ExtraTreesClassifier()
     dict['adaboost'] = AdaBoostClassifier()
     dict['gradient boost'] = GradientBoostingClassifier()
     dict['xgboost'] = XGBClassifier()
+    dict['gaussian_process'] = GaussianProcessClassifier()
+    dict['QDA'] = QuadraticDiscriminantAnalysis()
     dict['SVM linear'] = SVC()
     dict['SVM poly'] = SVC()
     dict['SVM rbf'] = SVC()
@@ -34,12 +43,16 @@ def get_models():
 def get_params():
     dict = {}
     dict['perceptron'] = {'n_iter': [200]}
+    dict['naive_bayes'] = {}
+    dict['k-neighbor'] = {'n_neighbors': [3,4,5]}
     dict['decision tree'] = {'max_depth': [2]}
     dict['randomforest'] = {'n_estimators': [10], 'max_depth': [2]}
     dict['extra trees'] = {'max_depth': [2]}
     dict['adaboost'] = {'n_estimators': [10]}
     dict['gradient boost'] = {'n_estimators': [10]}
     dict['xgboost'] = {'max_depth': [2]}
+    dict['gaussian_process'] = {'kernel': [1.0 * RBF(1.0)]}
+    dict['QDA'] = {}
     dict['SVM linear'] = {
         'kernel': ['linear'], 'probability': [True],
         'decision_function_shape': ['ovr']}
@@ -84,7 +97,7 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
 
 
 def main():
-    cv = ShuffleSplit(n_splits=4, test_size=.25, random_state=0)
+    cv = ShuffleSplit(n_splits=7, test_size=.25, random_state=0)
     scoring = 'f1_macro'
     models = get_models()
     params = get_params()
