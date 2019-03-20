@@ -51,7 +51,7 @@ def get_params():
         'max_iter': [2000], 'solver': ['adam'], 'random_state': [0]}
     return dict
 
-def print_cvs_and_cm(models, params, model_name, data, target, cv):
+def print_cvs_and_cm(models, params, model_name, data, target, cv, iris=0):
     model = models[model_name]
     param = params[model_name]
     model_cv = GridSearchCV(model, param, cv=cv, scoring='f1_macro')
@@ -63,7 +63,8 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv):
     print(model_cv.best_score_)
     print('\n' + 'confusion matrix')
     print(confusion_matrix(target, model_cv.predict(data)))
-    if model_name == 'Multi-layer perceptron':
+    if (model_name == 'Multi-layer perceptron'
+    and len(model_cv.best_params_['hidden_layer_sizes']) == 1):
         model = model_cv.best_estimator_
         print('confusion matrix from coefficients')
         print(confusion_matrix(target,
@@ -86,7 +87,7 @@ def main():
     data = iris.data
     target = iris.target
     for model_name in models.keys():
-        print_cvs_and_cm(models, params, model_name, data, target, cv)
+        print_cvs_and_cm(models, params, model_name, data, target, cv, iris=1)
 
 if __name__ == '__main__':
     main()
