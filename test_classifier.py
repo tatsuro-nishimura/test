@@ -16,6 +16,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import confusion_matrix
 from xgboost import XGBClassifier
@@ -41,6 +42,7 @@ def get_models():
     dict['linear_discriminant_analysis'] = LinearDiscriminantAnalysis()
     dict['quadratic_discriminant_analysis'] = QuadraticDiscriminantAnalysis()
     dict['SVM linear'] = SVC()
+    dict['LinearSVC'] = LinearSVC()
     dict['SVM poly'] = SVC()
     dict['SVM rbf'] = SVC()
     dict['Multi-layer perceptron'] = MLPClassifier()
@@ -66,6 +68,7 @@ def get_params():
     dict['SVM linear'] = {
         'kernel': ['linear'], 'probability': [True],
         'decision_function_shape': ['ovr']}
+    dict['LinearSVC'] = {}
     dict['SVM poly'] = {
         'kernel': ['poly'], 'probability': [True], 'degree': [3]}
     dict['SVM rbf'] = {'kernel': ['rbf'], 'probability': [True]}
@@ -100,6 +103,11 @@ def print_svm_linear_cm_from_coef(model, data, target):
     print(confusion_matrix(target, np.argmax(np.array(list_freq), axis=1)))
 
 def print_cm_from_coef(model_name, model_cv, best_param, data, target):
+    if model_name == 'LinearSVC':
+        model = model_cv.best_estimator_
+        print('confusion matrix from coefficients and intercepts')
+        print(confusion_matrix(target, np.argmax(np.dot(np.array(data), np.array(
+            model.coef_).T) + np.array(model.intercept_).T, axis=1)))
     if model_name == 'SVM linear':
         model = model_cv.best_estimator_
         print_svm_linear_cm_from_coef(model, data, target)
