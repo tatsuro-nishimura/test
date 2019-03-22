@@ -1,7 +1,9 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import RidgeClassifier
 from sklearn.linear_model import Perceptron
+from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -24,7 +26,9 @@ def logisticfunc(r):
 
 def get_models():
     dict = {}
+    dict['Ridge classifier'] = RidgeClassifier()
     dict['perceptron'] = Perceptron()
+    dict['Softmax Regression'] = LogisticRegression()
     dict['naive_bayes'] = GaussianNB()
     dict['k-neighbor'] = KNeighborsClassifier()
     dict['decision tree'] = DecisionTreeClassifier()
@@ -44,7 +48,10 @@ def get_models():
 
 def get_params():
     dict = {}
+    dict['Ridge classifier'] = {}
     dict['perceptron'] = {'n_iter': [200]}
+    dict['Softmax Regression'] = {
+        'multi_class': ['multinomial'], 'solver': ['sag']}
     dict['naive_bayes'] = {}
     dict['k-neighbor'] = {'n_neighbors': [3,4,5]}
     dict['decision tree'] = {'max_depth': [2]}
@@ -82,6 +89,13 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
     print(model_cv.best_score_)
     print('\n' + 'confusion matrix')
     print(confusion_matrix(target, model_cv.predict(data)))
+    if model_name == 'Softmax Regression':
+        model = model_cv.best_estimator_
+        print('confusion matrix from coefficients')
+        print(confusion_matrix(target, np.argmax(
+            np.exp(np.dot(np.array(
+                data), np.array(model.coef_).T) + np.array(
+                model.intercept_).T), axis=1)))
     if (model_name == 'Multi-layer perceptron'
         and len(best_param['hidden_layer_sizes']) == 1
         and best_param['activation'] == 'logistic'):
@@ -97,7 +111,6 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
         print('confusion matrix from coefficients')
         print(confusion_matrix(target, np.argmax(np.dot(model.coef_,
               np.array(data).T).T + model.intercept_, axis=1)))
-
 
 def main():
     cv = ShuffleSplit(n_splits=7, test_size=.25, random_state=0)
