@@ -89,18 +89,25 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
     print(model_cv.best_score_)
     print('\n' + 'confusion matrix')
     print(confusion_matrix(target, model_cv.predict(data)))
+    if model_name == 'linear_discriminant_analysis':
+        model = model_cv.best_estimator_
+        print('confusion matrix from coefficients and intercepts')
+        print(confusion_matrix(target, np.argmax(
+            np.dot(np.array(
+                data), np.array(model.coef_).T) + np.array(
+                model.intercept_).T, axis=1)))
     if model_name == 'Softmax Regression':
         model = model_cv.best_estimator_
-        print('confusion matrix from coefficients')
+        print('confusion matrix from coefficients and intercepts')
         print(confusion_matrix(target, np.argmax(
-            np.exp(np.dot(np.array(
+            np.dot(np.array(
                 data), np.array(model.coef_).T) + np.array(
-                model.intercept_).T), axis=1)))
+                model.intercept_).T, axis=1)))
     if (model_name == 'Multi-layer perceptron'
         and len(best_param['hidden_layer_sizes']) == 1
         and best_param['activation'] == 'logistic'):
         model = model_cv.best_estimator_
-        print('confusion matrix from coefficients')
+        print('confusion matrix from coefficients and intercepts')
         print(confusion_matrix(target,
               np.argmax(logisticfunc(np.dot(logisticfunc
                         (np.dot(np.array(data), model.coefs_[0])
@@ -108,7 +115,7 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
                          + model.intercepts_[1]), axis=1)))
     if model_name == 'perceptron':
         model = model_cv.best_estimator_
-        print('confusion matrix from coefficients')
+        print('confusion matrix from coefficients and intercepts')
         print(confusion_matrix(target, np.argmax(np.dot(model.coef_,
               np.array(data).T).T + model.intercept_, axis=1)))
 
