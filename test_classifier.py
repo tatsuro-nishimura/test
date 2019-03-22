@@ -99,22 +99,7 @@ def print_svm_linear_cm_from_coef(model, data, target):
         list_freq += [vec_freq]
     print(confusion_matrix(target, np.argmax(np.array(list_freq), axis=1)))
 
-
-def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
-    model = models[model_name]
-    param = params[model_name]
-    model_cv = GridSearchCV(model, param, cv=cv, scoring=scoring)
-    model_cv.fit(data, target)
-    print('\n')
-    print('\n' + model_name)
-    print('\n' + 'scoring: ' + scoring)
-    print('\n' + 'best parameter')
-    best_param = model_cv.best_params_
-    print(best_param)
-    print('\n' + 'cross validation score')
-    print(model_cv.best_score_)
-    print('\n' + 'confusion matrix')
-    print(confusion_matrix(target, model_cv.predict(data)))
+def print_cm_from_coef(model_name, model_cv, best_param, data, target):
     if model_name == 'SVM linear':
         model = model_cv.best_estimator_
         print_svm_linear_cm_from_coef(model, data, target)
@@ -147,6 +132,24 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
         print('confusion matrix from coefficients and intercepts')
         print(confusion_matrix(target, np.argmax(np.dot(model.coef_,
               np.array(data).T).T + model.intercept_, axis=1)))
+
+
+def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
+    model = models[model_name]
+    param = params[model_name]
+    model_cv = GridSearchCV(model, param, cv=cv, scoring=scoring)
+    model_cv.fit(data, target)
+    print('\n')
+    print('\n' + model_name)
+    print('\n' + 'scoring: ' + scoring)
+    print('\n' + 'best parameter')
+    best_param = model_cv.best_params_
+    print(best_param)
+    print('\n' + 'cross validation score')
+    print(model_cv.best_score_)
+    print('\n' + 'confusion matrix')
+    print(confusion_matrix(target, model_cv.predict(data)))
+    print_cm_from_coef(model_name, model_cv, best_param, data, target)
 
 def main():
     cv = ShuffleSplit(n_splits=7, test_size=.25, random_state=0)
