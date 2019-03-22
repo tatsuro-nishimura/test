@@ -74,6 +74,32 @@ def get_params():
         'max_iter': [2000], 'solver': ['adam'], 'random_state': [0]}
     return dict
 
+def print_svm_linear_cm_from_coef(model, data, target):
+    print('confusion matrix from coefficients and intercepts')
+    which_side_of_hyperplanes = np.sign(np.dot(np.array(data), np.array(
+        model.coef_).T) + np.array(model.intercept_).T)
+    num_target = len(np.unique(target))
+    list_freq = []
+    for which_side_of_hyperplane in which_side_of_hyperplanes:
+        index = 0
+        index2d = [0, 1]
+        num_hyperplanes = int(num_target * (num_target - 1)/2)
+        vec_freq = np.zeros(num_target)
+        while index < num_hyperplanes:
+            if which_side_of_hyperplane[index] > 0:
+                vec_freq[index2d[0]] += 1
+            elif which_side_of_hyperplane[index] < 0:
+                vec_freq[index2d[1]] += 1
+            index += 1
+            if index2d[1] < num_target - 1:
+                index2d[1] += 1
+            else:
+                index2d[0] += 1
+                index2d[1] = index2d[0] + 1
+        list_freq += [vec_freq]
+    print(confusion_matrix(target, np.argmax(np.array(list_freq), axis=1)))
+
+
 def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
     model = models[model_name]
     param = params[model_name]
@@ -89,6 +115,9 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
     print(model_cv.best_score_)
     print('\n' + 'confusion matrix')
     print(confusion_matrix(target, model_cv.predict(data)))
+    if model_name == 'SVM linear':
+        model = model_cv.best_estimator_
+        print_svm_linear_cm_from_coef(model, data, target)
     if model_name == 'linear_discriminant_analysis':
         model = model_cv.best_estimator_
         print('confusion matrix from coefficients and intercepts')
