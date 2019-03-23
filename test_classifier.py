@@ -10,6 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import VotingClassifier
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.gaussian_process.kernels import RBF
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -45,6 +46,9 @@ def get_models():
     dict['LinearSVC'] = LinearSVC()
     dict['SVM poly'] = SVC()
     dict['SVM rbf'] = SVC()
+    dict['rf+log+linsvm'] = VotingClassifier(estimators=[('rf', RandomForestClassifier(
+        )), ('log', LogisticRegression()), (
+            'linsvm', LinearSVC())])
     dict['Multi-layer perceptron'] = MLPClassifier()
     return dict
 
@@ -57,7 +61,7 @@ def get_params():
     dict['naive_bayes'] = {}
     dict['k-neighbor'] = {'n_neighbors': [3,4,5]}
     dict['decision tree'] = {'max_depth': [2]}
-    dict['randomforest'] = {'n_estimators': [10], 'max_depth': [2]}
+    dict['randomforest'] = {'max_depth': [2]}
     dict['extra trees'] = {'max_depth': [2]}
     dict['adaboost'] = {'n_estimators': [10]}
     dict['gradient boost'] = {'n_estimators': [10]}
@@ -66,12 +70,14 @@ def get_params():
     dict['linear_discriminant_analysis'] = {}
     dict['quadratic_discriminant_analysis'] = {}
     dict['SVM linear'] = {
-        'kernel': ['linear'], 'probability': [True],
-        'decision_function_shape': ['ovr']}
+        'kernel': ['linear']}
     dict['LinearSVC'] = {}
     dict['SVM poly'] = {
-        'kernel': ['poly'], 'probability': [True], 'degree': [3]}
-    dict['SVM rbf'] = {'kernel': ['rbf'], 'probability': [True]}
+        'kernel': ['poly'], 'degree': [3]}
+    dict['SVM rbf'] = {'kernel': ['rbf']}
+    dict['rf+log+linsvm'] = {'estimators': [[('rf', RandomForestClassifier(max_depth=2)), (
+        'log', LogisticRegression(multi_class='multinomial', solver='sag')), (
+            'linsvm', LinearSVC())]], 'voting': ['hard']}
     dict['Multi-layer perceptron'] = {
         'hidden_layer_sizes': [(10,)], 'activation': ['logistic'],
         'max_iter': [2000], 'solver': ['adam'], 'random_state': [0]}
