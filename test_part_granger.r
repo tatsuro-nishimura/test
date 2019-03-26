@@ -1,8 +1,9 @@
 library(devtools)
 source_url('https://raw.githubusercontent.com/cran/FIAR/master/R/partGranger.R')
-partGranger(iris[,1:4],nx=1,ny=1,order=3)
-partGranger(iris[,c(1,3,2,4)],nx=1,ny=1,order=3)
-partGranger(iris[,c(1,4,2,3)],nx=1,ny=1,order=3)
-partGranger(iris[,c(2,1,3,4)],nx=1,ny=1,order=3)
-partGranger(iris[,c(2,3,1,4)],nx=1,ny=1,order=3)
-partGranger(iris[,c(2,4,1,3)],nx=1,ny=1,order=3)
+partGranger(EuStockMarkets[,1:4],nx=1,ny=1,order=3)
+partGranger(EuStockMarkets[,1:4],nx=1,ny=3,order=3)
+for(i in 1:24){
+  perm <- permutations(4,4,1:4)[i,]
+  print(perm)
+  print(partGranger(EuStockMarkets[,perm],nx=1,ny=1,order=3))
+}
