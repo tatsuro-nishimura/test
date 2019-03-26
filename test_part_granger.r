@@ -1,4 +1,5 @@
 library(devtools)
+library(gtools)
 source_url('https://raw.githubusercontent.com/cran/FIAR/master/R/partGranger.R')
 n <- 4
 partGranger(EuStockMarkets[,1:n],nx=1,ny=1,order=3)
