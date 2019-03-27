@@ -1,6 +1,7 @@
 library(devtools)
 library(gtools)
 library(DiagrammeR)
+library(tseries)
 source_url('https://raw.githubusercontent.com/cran/FIAR/master/R/partGranger.R')
 pgranger <- function(ts, alpha=.05){
   n <- ncol(ts)
@@ -23,4 +24,7 @@ pgranger <- function(ts, alpha=.05){
   grViz(dotstr)
 }
 pgranger(EuStockMarkets)
+for (i in 1:n){
+  print(adf.test(EuStockMarkets[,i]))
+}
 pgranger(diff(EuStockMarkets),0.4)
