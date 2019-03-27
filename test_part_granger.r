@@ -17,7 +17,7 @@ for(i in 1:(n*(n-1))){
     arrow <- paste(cn[perm0[1]],'->',cn[perm0[2]])
     print(arrow)
     print(prob)
-    dotstr <- paste0(dotstr,arrow,'[label="',round(prob,5),'@@"];')
+    dotstr <- paste0(dotstr,arrow,'[label="',round(prob,5),'     "];')
   }
 }
 dotstr <- paste0(dotstr, '}')
