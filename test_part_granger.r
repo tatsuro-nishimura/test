@@ -29,8 +29,8 @@ for (i in 1:n){
   print(cn[i])
   print(adf.test(EuStockMarkets[,i]))
 }
-for(i in 1:(n*(n-1)/2)){
-  perm0 <- combinations(n,2,1:n)[i,]
+for(i in 1:(n*(n-1))){
+  perm0 <- permutations(n,2,1:n)[i,]
   print(paste(cn[perm0[1]], cn[perm0[2]]))
   print(po.test(EuStockMarkets[,perm0]))
 }
