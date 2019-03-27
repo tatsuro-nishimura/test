@@ -3,7 +3,6 @@ library(gtools)
 library(DiagrammeR)
 source_url('https://raw.githubusercontent.com/cran/FIAR/master/R/partGranger.R')
 pgranger <- function(ts, alpha=.05){
-  #ts <- EuStockMarkets
   n <- ncol(ts)
   partGranger(ts[,1:n],nx=1,ny=1,order=3)
   partGranger(ts[,1:n],nx=1,ny=3,order=3)
