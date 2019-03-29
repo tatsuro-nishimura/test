@@ -21,7 +21,24 @@ from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import confusion_matrix
 from xgboost import XGBClassifier
+from keras.models import Sequential
+from keras.layers.core import Dense, Activation
+from keras.layers import Dropout
+from keras.wrappers.scikit_learn import KerasClassifier
 import numpy as np
+
+def get_dnn_model():
+    model = Sequential()
+    model.add(Dense(10, input_shape=(4, )))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.25))
+    model.add(Dense(6))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(3))
+    model.add(Activation('softmax'))
+    model.compile(optimizer='SGD', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
 
 def logisticfunc(r):
     return(1/(1 + np.exp(-r)))
@@ -50,11 +67,12 @@ def get_models():
         )), ('log', LogisticRegression()), (
             'linsvm', LinearSVC())])
     dict['Multi-layer perceptron'] = MLPClassifier()
+    dict['deep learning'] = KerasClassifier(build_fn=get_dnn_model)
     return dict
 
 def get_params():
     dict = {}
-    dict['Ridge classifier'] = {}
+    dict['Ridge classifier'] = {'alpha': [0.5]}
     dict['perceptron'] = {'n_iter': [200]}
     dict['Softmax Regression'] = {
         'multi_class': ['multinomial'], 'solver': ['sag']}
@@ -81,6 +99,7 @@ def get_params():
     dict['Multi-layer perceptron'] = {
         'hidden_layer_sizes': [(10,)], 'activation': ['logistic'],
         'max_iter': [2000], 'solver': ['adam'], 'random_state': [0]}
+    dict['deep learning'] = {'epochs': [500], 'batch_size': [10], 'verbose': [1]}
     return dict
 
 def print_svm_linear_cm_from_coef(model, data, target):
@@ -173,7 +192,10 @@ def main():
     iris= load_iris()
     data = iris.data
     target = iris.target
+    dl_skip = True
     for model_name in models.keys():
+        if model_name == 'deep learning' and dl_skip:
+            break
         print_cvs_and_cm(models, params, model_name, data, target, cv, scoring)
 
 if __name__ == '__main__':
