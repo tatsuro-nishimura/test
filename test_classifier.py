@@ -22,7 +22,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import confusion_matrix
 from xgboost import XGBClassifier
 from keras.models import Sequential
-from keras.layers.core import Dense, Activation
+from keras.layers.core import Dense
+from keras.layers.core import Activation
 from keras.layers import Dropout
 from keras.wrappers.scikit_learn import KerasClassifier
 import numpy as np
@@ -37,7 +38,7 @@ def get_dnn_model():
     model.add(Dropout(0.1))
     model.add(Dense(3))
     model.add(Activation('softmax'))
-    model.compile(optimizer='SGD', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='SGD', loss='categorical_crossentropy')
     return model
 
 def logisticfunc(r):
@@ -186,7 +187,7 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
 
 def main():
     cv = ShuffleSplit(n_splits=7, test_size=.25, random_state=0)
-    scoring = 'accuracy'
+    scoring = 'f1_macro'
     models = get_models()
     params = get_params()
     iris= load_iris()
