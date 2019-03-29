@@ -44,7 +44,7 @@ def get_models():
     dict['SVM poly'] = SVR()
     dict['SVM rbf'] = SVR()
     dict['Multi-layer perceptron'] = MLPRegressor()
-    dict['keras regressor'] = KerasRegressor(build_fn=get_dnn_model)
+    dict['dnn'] = KerasRegressor(build_fn=get_dnn_model)
     return dict
 
 def get_params():
@@ -69,7 +69,7 @@ def get_params():
         'learning_rate': ['adaptive'], 'learning_rate_init': [.01],
         'alpha': [.01], 'max_iter': [1000], 'solver': ['adam'],
         'random_state': [0]}
-    dict['keras regressor'] = {'epochs': [100], 'batch_size': [10], 'verbose': [1]}
+    dict['dnn'] = {'epochs': [100], 'batch_size': [10], 'verbose': [1]}
     return dict
 
 def relu(r):
@@ -121,7 +121,7 @@ def main():
     data = diabetes.data
     target = diabetes.target
     for model_name in models.keys():
-        if model_name == 'keras regressor':
+        if model_name == 'dnn':
             break
         print_cvs_rmse(models, params, model_name, data, target, cv, scoring)
 

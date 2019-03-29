@@ -68,7 +68,7 @@ def get_models():
         )), ('log', LogisticRegression()), (
             'linsvm', LinearSVC())])
     dict['Multi-layer perceptron'] = MLPClassifier()
-    dict['keras classifier'] = KerasClassifier(build_fn=get_dnn_model)
+    dict['dnn'] = KerasClassifier(build_fn=get_dnn_model)
     return dict
 
 def get_params():
@@ -100,7 +100,7 @@ def get_params():
     dict['Multi-layer perceptron'] = {
         'hidden_layer_sizes': [(10,)], 'activation': ['logistic'],
         'max_iter': [2000], 'solver': ['adam'], 'random_state': [0]}
-    dict['keras classifier'] = {'epochs': [500], 'batch_size': [10], 'verbose': [1]}
+    dict['dnn'] = {'epochs': [500], 'batch_size': [10], 'verbose': [1]}
     return dict
 
 def print_svm_linear_cm_from_coef(model, data, target):
@@ -194,7 +194,7 @@ def main():
     data = iris.data
     target = iris.target
     for model_name in models.keys():
-        if model_name == 'keras classifier':
+        if model_name == 'dnn':
             break
         print_cvs_and_cm(models, params, model_name, data, target, cv, scoring)
 
