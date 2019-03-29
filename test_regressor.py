@@ -9,6 +9,8 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.svm import SVR
 from sklearn.neural_network import MLPRegressor
 from xgboost import XGBRegressor
+from sklearn.metrics import mean_squared_error
+import numpy as np
 
 def get_models():
     dict = {}
@@ -45,7 +47,25 @@ def get_params():
         'random_state': [0]}
     return dict
 
-def print_cvs(models, params, model_name, data, target, cv, scoring):
+def relu(r):
+    return np.maximum(0, r)
+
+def print_rmse_from_coef(model_name, model, best_param, data, target):
+    if model_name == 'SVM linear':
+        print('RMSE from coefficients and intercepts')
+        print(np.sqrt(mean_squared_error(target, np.dot(np.array(
+            data), np.array(model.coef_).T) + np.array(model.intercept_).T)))
+    if (model_name == 'Multi-layer perceptron'
+        and len(best_param['hidden_layer_sizes']) == 1
+        and best_param['activation'] == 'relu'):
+        print('RMSE from coefficients and intercepts')
+        print(np.sqrt(mean_squared_error(target,
+              relu(np.dot(relu(np.dot(
+                np.array(data), model.coefs_[0]) + model.intercepts_[0]),
+                    model.coefs_[1]) + model.intercepts_[1]))))
+
+
+def print_cvs_rmse(models, params, model_name, data, target, cv, scoring):
     model = models[model_name]
     param = params[model_name]
     model_cv = GridSearchCV(model, param, cv=cv, scoring=scoring)
@@ -58,6 +78,10 @@ def print_cvs(models, params, model_name, data, target, cv, scoring):
     print(best_param)
     print('\n' + 'cross validation score')
     print(model_cv.best_score_)
+    model = model_cv.best_estimator_
+    print('RMSE')
+    print(np.sqrt(mean_squared_error(target, model.predict(data))))
+    print_rmse_from_coef(model_name, model, best_param, data, target)
 
 
 def main():
@@ -69,7 +93,7 @@ def main():
     data = diabetes.data
     target = diabetes.target
     for model_name in models.keys():
-        print_cvs(models, params, model_name, data, target, cv, scoring)
+        print_cvs_rmse(models, params, model_name, data, target, cv, scoring)
 
 if __name__ == '__main__':
     main()
