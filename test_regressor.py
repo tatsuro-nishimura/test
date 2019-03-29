@@ -50,19 +50,22 @@ def get_params():
 def relu(r):
     return np.maximum(0, r)
 
+def rmse(v0, v1):
+    return np.sqrt(mean_squared_error(v0, v1))
+
 def print_rmse_from_coef(model_name, model, best_param, data, target):
     if model_name == 'SVM linear':
         print('RMSE from coefficients and intercepts')
-        print(np.sqrt(mean_squared_error(target, np.dot(np.array(
-            data), np.array(model.coef_).T) + np.array(model.intercept_).T)))
+        print(rmse(target, np.dot(np.array(
+            data), np.array(model.coef_).T) + np.array(model.intercept_).T))
     if (model_name == 'Multi-layer perceptron'
         and len(best_param['hidden_layer_sizes']) == 1
         and best_param['activation'] == 'relu'):
         print('RMSE from coefficients and intercepts')
-        print(np.sqrt(mean_squared_error(target,
+        print(rmse(target,
               relu(np.dot(relu(np.dot(
                 np.array(data), model.coefs_[0]) + model.intercepts_[0]),
-                    model.coefs_[1]) + model.intercepts_[1]))))
+                    model.coefs_[1]) + model.intercepts_[1])))
 
 
 def print_cvs_rmse(models, params, model_name, data, target, cv, scoring):
@@ -80,7 +83,7 @@ def print_cvs_rmse(models, params, model_name, data, target, cv, scoring):
     print(model_cv.best_score_)
     model = model_cv.best_estimator_
     print('RMSE')
-    print(np.sqrt(mean_squared_error(target, model.predict(data))))
+    print(rmse(target, model.predict(data)))
     print_rmse_from_coef(model_name, model, best_param, data, target)
 
 
