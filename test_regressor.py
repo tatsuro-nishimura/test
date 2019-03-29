@@ -1,6 +1,9 @@
 from sklearn import datasets
 from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import Lasso
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import AdaBoostRegressor
@@ -14,6 +17,9 @@ import numpy as np
 
 def get_models():
     dict = {}
+    dict['linear regression'] = LinearRegression()
+    dict['Ridge regression'] = Ridge()
+    dict['Lasso regression'] = Lasso()
     dict['decision tree'] = DecisionTreeRegressor()
     dict['randomforest'] = RandomForestRegressor()
     dict['extra trees'] = ExtraTreesRegressor()
@@ -28,6 +34,9 @@ def get_models():
 
 def get_params():
     dict = {}
+    dict['linear regression'] = {}
+    dict['Ridge regression'] = {'alpha': [0.5]}
+    dict['Lasso regression'] = {'alpha': [0.1]}
     dict['decision tree'] = {'max_depth': [2]}
     dict['randomforest'] = {'max_depth': [2]}
     dict['extra trees'] = {'max_depth': [2]}
