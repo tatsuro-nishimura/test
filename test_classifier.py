@@ -31,10 +31,10 @@ def get_dnn_model():
     model = Sequential()
     model.add(Dense(10, input_shape=(4, )))
     model.add(Activation('relu'))
-    model.add(Dropout(0.25))
+    model.add(Dropout(0.1))
     model.add(Dense(6))
     model.add(Activation('relu'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.1))
     model.add(Dense(3))
     model.add(Activation('softmax'))
     model.compile(optimizer='SGD', loss='categorical_crossentropy', metrics=['accuracy'])
@@ -186,15 +186,14 @@ def print_cvs_and_cm(models, params, model_name, data, target, cv, scoring):
 
 def main():
     cv = ShuffleSplit(n_splits=7, test_size=.25, random_state=0)
-    scoring = 'f1_macro'
+    scoring = 'accuracy'
     models = get_models()
     params = get_params()
     iris= load_iris()
     data = iris.data
     target = iris.target
-    dl_skip = True
     for model_name in models.keys():
-        if model_name == 'deep learning' and dl_skip:
+        if model_name == 'deep learning':
             break
         print_cvs_and_cm(models, params, model_name, data, target, cv, scoring)
 
