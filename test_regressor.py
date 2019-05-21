@@ -79,7 +79,7 @@ def rmse(v0, v1):
     return np.sqrt(mean_squared_error(v0, v1))
 
 def print_rmse_from_coef(model_name, model, best_param, data, target):
-    if model_name in ['linear regression', 'SVM linear']:
+    if model_name in ['linear regression', 'SVM linear', 'Lasso regression', 'Ridge regression']:
         print('\n' + 'RMSE from coefficients and intercepts')
         print(rmse(target, np.dot(np.array(
             data), np.array(model.coef_).T) + np.array(model.intercept_).T))

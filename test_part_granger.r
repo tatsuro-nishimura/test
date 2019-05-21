@@ -24,7 +24,9 @@ pgranger <- function(ts, alpha=.05){
   grViz(dotstr)
 }
 pgranger(EuStockMarkets)
+ts <- EuStockMarkets
 cn <- colnames(ts)
+n <- ncol(ts)
 for (i in 1:n){
   print(cn[i])
   print(adf.test(EuStockMarkets[,i]))
