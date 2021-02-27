@@ -5,3 +5,7 @@ zeta(2i)
 zeta(1+1i)
 zeta(-1+1i)
 ```
+#drawing the absolute values of the Riemann zeta function along the critical line
+```{r}
+plot((1:10000)*0.01, abs(zeta(1/2 + (1:10000)*0.01i)),type='l')
+```
