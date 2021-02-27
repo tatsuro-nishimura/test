@@ -16,6 +16,12 @@ res <- tsclust(series = series_list,
                distance = "sbd",
                centroid = "shape",
                k = 2)
-
 df_res <- data.frame(cluster = res@cluster,
                      centroid_dist = res@cldist)
+
+#drawing centroids
+centroids <- res@centroids
+for(i in 1:length(centroids)){
+  ts_centroid <- centroids[i] %>% unlist()
+  plot(1:length(ts_centroid), ts_centroid, type='l', xlab='time', ylab='centroid(z-score)')
+}
